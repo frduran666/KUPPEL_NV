@@ -261,7 +261,7 @@
                                                     <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcantidad" id="txtcantidad" onkeyup="Multiplicar();" onkeypress="return valida(event)" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 60% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto"  onkeyup="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
                                                     <td><center><input type="text" class="texto" style=" width: 85% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 50% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
@@ -419,8 +419,10 @@
         return false;
         }
 
+    
 
     function Descuento() {
+        document.getElementById("txtprecioneto").disabled = true;
         var valor = $('#txtsubtotal').val();
         var porcenta = $('#txtDescuento').val();
 
@@ -650,7 +652,27 @@
     }
 
 
-    
+    function PrecioMod() {
+        document.getElementById("txtDescuento").disabled = true;
+
+        var valorNeto = $('#txtprecioneto').val();
+        var cantidadTotal = $('#txtcantidad').val();
+
+        var descuento = Math.round(precioProducto * 0.15);
+        var precioMax = (precioProducto - descuento);
+        if (txtdetalle == "" || cantidad == "" || preciounitario == "" || preciounitario == "" || parseInt(preciounitario) < precioMax) {
+             if ((parseInt(valorNeto) < precioMax)) {
+            alert("Neto Ingresado Debe ser Hasta el 15% de Descuento");
+            }
+            else {
+                $('#txtprecioneto').val(precioMax);
+                $('#txtsubtotal').val(valorNeto * cantidadTotal);
+                $('#txtTotalConDes').val(valorNeto * cantidadTotal);
+            }
+        }
+       
+    }
+
     function addRow() {
         var txtdetalle = $('#txtdescripcion').val();
         var contador = $('#contador_registros').val();
@@ -677,6 +699,8 @@
             }
         }
         else {
+            document.getElementById("txtprecioneto").disabled = false;
+        document.getElementById("txtDescuento").disabled = false;
             var max = $('#contador_registros').val();
             console.log(max);
             for (var i = 1; i <= max; i++) {

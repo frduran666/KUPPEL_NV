@@ -490,24 +490,31 @@ namespace DSKUPPEL.Controllers
 
             ProductosModels producto = new ProductosModels();
             List<LinkedResource> resources = new List<LinkedResource>();
+            double Iva = 0;
+            double subtotal = 0;
+            double ivaux = 0;
             foreach (NotaDeVentaDetalleModels nvd in NVentaDetalles)
             {
                 double precioConIVa = Math.Round(nvd.nvSubTotal * 1.19);
-                double Iva = (precioConIVa - nvd.nvSubTotal);
+                subtotal = subtotal + nvd.nvSubTotal;
+                Iva = (precioConIVa - nvd.nvSubTotal);
+                ivaux = ivaux + Iva;
                 producto.CodProd = nvd.CodProd;
                 htmlBody += @"<tr>" +
                            @"<td>" + nvd.nvLinea + @"</td>" +
                            @"<td>" + nvd.CodProd + @"</td>" +
                            @"<td>" + nvd.DesProd + @"</td>" +
-                           @"<td>" + nvd.nvCant + @"</td>" +
-                           @"<td>" + nvd.nvPrecio + @"</td>" +
-                           @"<td>" + nvd.nvSubTotal + @"</td>" +
-                           @"<td>" + Iva + @"</td>" +
-                           @"<td>" + precioConIVa + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvCant + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvPrecio + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvSubTotal + @"</td>" +
+                           @"<td style='text-align: right;'>" + Iva + @"</td>" +
+                           @"<td style='text-align: right;'>" + precioConIVa + @"</td>" +
                            @"</tr>";
             }
-            htmlBody += @"<tr><th colspan =" + 7 + @">Total</th><td>" + NVentaCabeceras[0].TotalBoleta + @"</td></tr>";
-            htmlBody += @"</body></html>";
+            htmlBody += @"<tr><th style='text-align: right;' colspan =" + 7 + @">Sub Total</th><td style='text-align: right;'>" + subtotal  + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total Iva</th><td style='text-align: right;'>" + ivaux + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total</th><td style='text-align: right;'>" + NVentaCabeceras[0].TotalBoleta + @"</td></tr>";
+            htmlBody += @" </body></html>";
 
             AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
             foreach (LinkedResource r in resources)

@@ -261,7 +261,7 @@
                                                     <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcantidad" id="txtcantidad" onkeyup="Multiplicar();" onkeypress="return valida(event)" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 60% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto"  onchange="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
                                                     <td><center><input type="text" class="texto" style=" width: 85% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 50% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
@@ -419,6 +419,7 @@
         return false;
         }
 
+    
 
     function Descuento() {
         var valor = $('#txtsubtotal').val();
@@ -429,20 +430,24 @@
             $('#txtTotalConDes').val(valor);
         }
         else {
-            if (valor != '') {
+            if (valor != '' && parseInt(porcenta) != 0) {
+                document.getElementById("txtprecioneto").disabled = true;
                 if (porcenta <= 15) {
                     var url = "@Url.Action("Porcentaje", "Ventas")";
                     var data = { valor: valor, porcenta: porcenta };
-
+                    
                     $.post(url, data).done(function (data) {
+                        
                         $('#txtTotalConDes').val(data);
                         if (porcenta == ''){
                             porcenta = 0;
                             $('#txtDescuento').val(porcenta);
-                        }
+                        }                        
                     })
+                    
                 }
                 else {
+                    document.getElementById("txtprecioneto").disabled = true;
                     $('#txtDescuento').val('15');
                     Descuento();
                 }
@@ -451,7 +456,7 @@
         }
     }
 
-        function QuickProductSearch() {
+    function QuickProductSearch() {
         var CodRapido = $('#txtcodrapido').val();
         var CodLista = $('#cbxlista').val();
 
@@ -517,6 +522,8 @@
                 $('#txtumedida').val('');
                 $('#txtcantidad').val('');
                 $('#txtstock').val('');
+                $('#txtsubtotal').val('');
+                $('#txtTotalConDes').val('');
             }
             else {
                 $("input#txtdescripcion").autocomplete(
@@ -650,7 +657,30 @@
     }
 
 
-    
+    function PrecioMod() {
+        //var valorNeto = $('#txtprecioneto').val();
+        var cantidadTotal = $('#txtcantidad').val();
+        var preciounitario = parseInt($('#txtprecioneto').val());
+
+        var descuento = Math.round(precioProducto * 0.15);
+        var precioMax = (precioProducto - descuento);
+
+        if (preciounitario < precioMax) {
+             $('#txtprecioneto').val(precioMax);
+                $('#txtsubtotal').val(precioMax * cantidadTotal);
+            $('#txtTotalConDes').val(precioMax * cantidadTotal);
+            alert("Neto Ingresado Debe ser Hasta el 15% de Descuento");
+            document.getElementById("txtDescuento").disabled = true;
+        } else {
+            $('#txtsubtotal').val($('#txtprecioneto').val() * $('#txtcantidad').val());
+            $('#txtTotalConDes').val($('#txtprecioneto').val() * $('#txtcantidad').val());
+            //document.getElementById("txtDescuento").disabled = true;
+        }
+        if (preciounitario > precioMax) {
+            document.getElementById("txtDescuento").disabled = true;
+        }
+}
+
     function addRow() {
         var txtdetalle = $('#txtdescripcion').val();
         var contador = $('#contador_registros').val();
@@ -677,6 +707,8 @@
             }
         }
         else {
+            document.getElementById("txtprecioneto").disabled = false;
+            document.getElementById("txtDescuento").disabled = false;
             var max = $('#contador_registros').val();
             console.log(max);
             for (var i = 1; i <= max; i++) {

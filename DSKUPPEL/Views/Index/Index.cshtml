@@ -65,21 +65,37 @@
                                     <input type="email" id="txtCorreo" name="txtCorreo" required class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
+                            <br />
                             <div class="form-group">
                                 <label class="control-label col-md-2 col-sm-2 col-xs-12">Contraseña</label>
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     <input type="password" id="txtContrasena" name="txtContrasena" required maxlength="13" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
+                            <br />
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Repita Contraseña</label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input type="password" id="txtContrasenaMod" name="txtContrasenaMod" required maxlength="13" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <br />
                             <div style="display:none;">
                                 <input type="text" id="txtVendCod" name="txtVendCod" value="@Id" />
                             </div>
-                            <input type="submit" value="Actualizar" id="btnActualizarCorreo" name="btnActualizarCorreo" class="active btn btn-primary">
-                            <button type="button" id="btnCerrarModal" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <br />
+                            
                         </div>@*</form>*@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div>
+                            <button type="button" value="Actualizar" id="btnActualizarCorreo" name="btnActualizarCorreo" class="active btn btn-primary col-md-2 col-sm-2 col-xs-12" />Actualizar
+                            <button type="button" id="btnCerrarModal" class="active btn btn-default col-md-2 col-sm-2 col-xs-12" data-dismiss="modal">Cerrar</button>
+                        </div>
+                        <div>
+
+                        </div>
                         <div style="display: none;">
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="text" id="Id" class="form-control col-md-7 col-xs-12">
