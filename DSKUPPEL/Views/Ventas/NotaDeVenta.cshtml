@@ -1,0 +1,895 @@
+﻿@using DSKUPPEL.Models;
+@{
+
+    if (Session["VenCod"] == null)
+    {
+        var URL = System.Configuration.ConfigurationManager.AppSettings.Get("url");
+        Response.Redirect(URL);
+    }
+
+    ViewBag.Title = "NotaDeVenta";
+    string anterior = ViewBag.Anterior;
+    string NomAux = ViewBag.NomAux;
+    string CodAux = ViewBag.CodAux;
+    string VenCodigo = Session["VenCod"].ToString();
+    string VenDes = Session["VenDes"].ToString();
+    string user = Session["Nombre"].ToString();
+    List<CondicionVentasModels> condicion = ViewBag.condicion;
+    int vcontacto = ViewBag.vcontactos;
+    int vdirec = ViewBag.vdirecc;
+    List<ClientesModels> listcontacto = ViewBag.contactos;
+    List<ListaDePrecioModels> listap = ViewBag.lista;
+    List<CentrodeCostoModels> cc = ViewBag.cc;
+    List<DireccionDespachoModels> direc = ViewBag.direccion;
+    string fechaactual = DateTime.Now.ToString("yyyy-MM-dd");
+    DateTime dia = DateTime.Now;
+    dia = dia.AddDays(1);
+    string fechamin = (DateTime.Now.Year + "-" + DateTime.Now.ToString("MM") + "-" + dia.ToString("dd")).ToString();
+    string codigo = ViewBag.codigo;
+    string nombre = ViewBag.nombre;
+    string tituloanterior = ViewBag.anterior;
+    string pageantegior = ViewBag.page;
+    int numero1 = 1;
+    int total1 = 0;
+    double impuesto = 0;
+    double totalfinal = 0;
+    List<NotadeVentaCabeceraModels> nnotaventa = ViewBag.numeronota;
+    int id = int.Parse(Session["ID"].ToString());
+}
+
+
+<link href="~/Scripts/jquery-ui.css" rel="stylesheet" />
+<script src="~/WebJs/Funciones.js"></script>
+
+<body class="contact-page">
+    <div class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="crumbs">
+                    <ul>
+                        <li><a href='@Url.Action("Index", "Index")'>Inicio</a></li>
+                        <li><a href='@Url.Action(@pageantegior, "Ventas", new { ID = @id })'>@tituloanterior</a></li>
+                        <li><a href='@Url.Action("NotaDeVenta", "Ventas")'>Nota de Venta</a></li>
+                    </ul>
+                </div>
+                <br>
+                <div class="zerogrid">
+
+
+
+
+                    @if (listap == null)
+                    {
+                        <p>El cliente @codigo no tiene listas de precio </p>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <form name="form_notapedido" method="post" class="col-md-12" id="ff">
+                                <input type="hidden" id="filtrarBusqueda" name="filtrarBusqueda" value="40">
+                                <h3 class="contactosForm col-md-10 borde_gris2">Datos del cliente</h3>
+                                <br>
+                                <div class="row col-md-10">
+                                    <div class="col-1-3">
+                                        <table class="registros registrosLight registros_1 col-md-5" id="tabla2">
+                                            <tr>
+                                                <th nowrap="nowrap">N&ordm; Cotización</th>
+                                                <td><input type="text" name="txtnventa" value="@nnotaventa[0].NVNumero" readonly="readonly" id="txtnventa" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Vendedor</th>
+                                                <td>
+                                                    <input type="text" value="@VenDes" name="txtnomvendedor" id="txtnomvendedor" readonly="readonly" tabindex="-1" />
+                                                    <input type="hidden" name="txtvendedor" id="txtvendedor" value="@VenCodigo" readonly="readonly" />
+                                                    <input type="hidden" name="txtid" id="txtid" value="@id" readonly="readonly" />
+                                                    <input type="hidden" name="txtCorreoCliente" id="txtCorreoCliente" value="@ViewBag.CorreoCliente" readonly="readonly" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Cond. Venta</th>
+                                                <td>
+                                                    <select name="cbxconven" id="cbxconven" tabindex="4">
+                                                        <option selected value="00"> -- Seleccione Cond. Vta -- </option>
+                                                        @{
+                                                            for (int i = 0; i < condicion.Count; i++)
+                                                            {
+                                                                <option selected value="@condicion[i].ConVta"> @condicion[i].CveDes </option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Fecha Pedido</th>
+                                                <td><input type="date" name="txtfechapedido" value="@fechaactual" id="txtfechapedido" readonly="readonly" /></td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Fecha Entrega</th>
+                                                <td><input type="date" name="txtfechaentrega" min=@fechamin value=@fechamin id="txtfechaentrega" /></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div></div>
+                                    <div class="col-2-3">
+                                        <table class="registros registrosLight registros_1 col-md-5">
+                                            <tr>
+                                                <th nowrap="nowrap">Cod. Cliente</th>
+                                                <td>
+                                                    <input type="text" name="nombreCliente" id="nombreCliente" value="@codigo - @nombre" readonly="readonly" tabindex="-1" />
+                                                    <input type="hidden" name="txtcliente" id="txtcliente" value="@codigo" readonly="readonly" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Contacto</th>
+                                                <td>
+                                                    @{
+                                                        try
+                                                        {
+                                                            if (vcontacto == 1)
+                                                            {
+                                                                <select name="txtcontacto1" id="txtcontacto1">
+                                                                    <option selected value="00"> -- Seleccione Contacto -- </option>
+                                                                    @{
+                                                                        for (int i = 0; i < listcontacto.Count; i++)
+                                                                        {
+                                                                            <option value="@listcontacto[i].NomCon" selected> @listcontacto[i].NomCon </option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="text" name="txtcontacto0" id="txtcontacto0" value="Sin Contacto" tabindex="-1" />
+                                                            }
+                                                        }
+                                                        catch (Exception)
+                                                        {
+                                                            <input type="text" name="txtcontacto00" id="txtcontacto00" value="" tabindex="-1" />
+                                                        }
+                                                    }
+                                                    <input type="hidden" id="txtVcontacto" name="txtVcontacto" value=@vcontacto>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Lista de Precio</th>
+                                                <td>
+                                                    <select name="cbxlista" id="cbxlista" tabindex="7">
+                                                        <option selected value="00"> -- Seleccione Lista De Precio -- </option>
+                                                        @{
+                                                            for (int i = 0; i < listap.Count; i++)
+                                                            {
+                                                                <option value="@listap[i].Codlista" selected> @listap[i].DesLista </option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Centro de Costo</th>
+                                                <td>
+                                                    <select name="cbxccosto" id="cbxccosto" tabindex="9">
+                                                        <option selected value="00"> -- Seleccione Centro de Costo -- </option>
+                                                        @{
+                                                            for (int i = 0; i < cc.Count; i++)
+                                                            {
+                                                                <option selected value="@cc[i].CodiCC"> @cc[i].DescCC </option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th nowrap="nowrap">Observaci&oacute;n</th>
+                                                <td><textarea name="txtobservacion" id="txtobservacion" cols="100" rows="2"> </textarea></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <hr>
+                            <br>
+                            <div class="col-full" style="overflow: auto;">
+                                <div id="ff">
+                                    <h3 class="contactosForm col-md-10 borde_gris2">Dirección de Despacho</h3>
+                                    <br />
+                                    <div class="container">
+                                        @{
+                                            try
+                                            {
+                                                if (vdirec == 1)
+                                                {
+                                                    <select name="cbxDireccion" id="cbxDireccion" tabindex="9">
+                                                        <option selected value="00"> -- Seleccione Dirección de Despacho -- </option>
+                                                        @{
+                                                            for (int i = 0; i < direc.Count; i++)
+                                                            {
+                                                                <option selected value="@direc[i].NomDch"> @direc[i].DirDch @direc[i].ComDch </option>
+                                                            }
+                                                        }
+
+                                                    </select>
+                                                }
+                                                else
+                                                {
+                                                    <input type="text" name="cbxDireccion" id="cbxDireccion" value="No Tiene Dirección Asociado" tabindex="-1" readonly="readonly" />
+                                                }
+
+                                            }
+                                            catch (Exception)
+                                            {
+
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <hr>
+                            <br>
+                            @Html.Raw(TempData["Mensaje"])
+                            <div class="col-full" style="overflow: auto;">
+                                <div id="gg">
+                                    <h3 class="contactosForm col-md-10 borde_gris2">Agregar producto</h3>
+                                    <br />
+                                    <div class="container">
+                                        <table id="DynamicRowsTable2">
+                                            <thead>
+                                                <tr id="">
+                                                    <th>Cod. Rap.</th>
+                                                    <th style=" width: 450px !important">Descripcion/Codigo</th>
+                                                    <th>Cant.</th>
+                                                    <th>Stock</th>
+                                                    <th>U. deM</th>
+                                                    <th>Neto</th>
+                                                    <th>Sub-Total</th>
+                                                    <th>Descuen.(%)</th>
+                                                    <th>Total</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcodrapido" id="txtcodrapido" onblur="QuickProductSearch();" /></center></td>
+                                                    <td>
+                                                        <center>
+                                                            <input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtdescripcion" id="txtdescripcion" onkeyup="ProductSearch();" />
+                                                            <input name="txtcodigoProducto" type="hidden" id="txtcodigoProducto" tabindex="1" />
+                                                            <input name="txtdescripcionProducto" type="hidden" id="txtdescripcionProducto" tabindex="1" />
+                                                        </center>
+                                                    </td>
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcantidad" id="txtcantidad" onkeyup="Multiplicar();" onkeypress="return valida(event)" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 60% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
+                                                    <td><center><input type="text" class="texto" style=" width: 85% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 50% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
+                                                    <td><input class="sendButton" style="cursor: pointer; background-color: #0AAC8E; width: auto; padding: 8px 8px; color: #ffffff;" type="submit" name="Agregar" value="(+)" onclick="addRow();"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="divCodigo" class="col-full" style="overflow: auto;">
+                                <div class="container">
+                                    <table class="table" id="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="codigoTh">C&oacute;digo</th>
+                                                <th class="descripcionTh">Descripci&oacute;n</th>
+                                                <th class="cantidadTh">Cantidad</th>
+                                                <th class="unimedTh">Unidad Medida </th>
+                                                <th class="precioTh">Precio Unit Neto</th>
+                                                <th class="subTotalTh">Subtotal Neto</th>
+                                                <th class="subTotalTh">Descu. (%)</th>
+                                                <th class="subTotalTh">Total</th>
+                                                <th class="accionesTh">&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="generaTabla"></tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <style type="text/css">
+                                /*
+                                .tg {
+                                    border-collapse: collapse;
+                                    border-spacing: 0;
+                                }
+
+                                    .tg td {
+                                        font-family: Arial, sans-serif;
+                                        font-size: 14px;
+                                        padding: 10px 5px;
+                                        border-style: solid;
+                                        border-width: 1px;
+                                        overflow: hidden;
+                                        word-break: normal;
+                                        border-color: black;
+                                    }
+
+                                    .tg th {
+                                        font-family: Arial, sans-serif;
+                                        font-size: 14px;
+                                        font-weight: normal;
+                                        padding: 10px 5px;
+                                        border-style: solid;
+                                        border-width: 1px;
+                                        overflow: hidden;
+                                        word-break: normal;
+                                        border-color: black;
+                                    }
+
+                                    .tg .tg-0lax {
+                                        text-align: left;
+                                        vertical-align: top
+                                    }
+                                    */
+                            </style>
+
+
+                            <div id="divCodigo" class="col-full" style="overflow: auto;">
+                                <div class="container" style="float:right;">
+
+                                    <table class="tg">
+                                        <tr>
+                                            <th class="tg-0lax">
+                                                <input type="hidden" id="contador_registros" name="contador_registros" value=@numero1>
+                                                <h3> Sub-Total Neto:&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                            </th>
+
+                                            <th class="tg-0lax">
+                                                <h3><label id="lbtotal">@double.Parse(total1.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                                <input type="hidden" id="txttotal" name="txttotal" value=@total1>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-0lax"><h3>Impuesto:&nbsp;&nbsp;&nbsp;&nbsp;</h3></td>
+                                            <td class="tg-0lax">
+                                                <h3><label id="lbimpuesto">@double.Parse(impuesto.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                                <input type="hidden" id="txtimpuesto" name="txtimpuesto" value=@impuesto>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-0lax"><h3>Total Final:&nbsp;&nbsp;&nbsp;&nbsp;</h3></td>
+                                            <td class="tg-0lax">
+                                                <h3><label id="lbtotalfinal">@double.Parse(totalfinal.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                                <input type="hidden" id="txttotalfinal" name="txttotalfinal" value=@totalfinal>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="col-full">
+                                <div style="float:right">
+                                    <input class="sendButton" id="btnCot" style="cursor: pointer; background-color: #0AAC8E; width: auto; padding: 8px 8px; color: #ffffff;" type="submit" value="Genera Cotización" onclick="agregarnotadeventa();">
+                                    @Html.Hidden("RedirectTo", Url.Action("Misclientes", "Ventas", new { ID = @id, cod = VenCodigo }))
+                                    @Html.Hidden("NV", Url.Action("NotaDeVenta", "Ventas", new { CodAux = @CodAux, NomAux = @NomAux, anterior = @anterior }))
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <br />
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+
+    function NumCheck(e, field) {
+        key = e.keyCode ? e.keyCode : e.which
+        // backspace
+        if (key == 8) return true
+        // 0-9
+        if (key > 47 && key < 58) {
+            if (field.value == "") return true
+            regexp = /.[0-9]{2}$/
+            return !(regexp.test(field.value))
+        }
+        // .
+        if (key == 46) {
+            if (field.value == "") return false
+            regexp = /^[0-9]+$/
+            return regexp.test(field.value)
+        }
+        // other key
+        return false
+
+    }
+
+
+    function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+        return true;
+    }
+        return false;
+        }
+
+
+    function Descuento() {
+        var valor = $('#txtsubtotal').val();
+        var porcenta = $('#txtDescuento').val();
+
+        if (porcenta == '') {
+            $('#txtDescuento').val('');
+            $('#txtTotalConDes').val(valor);
+        }
+        else {
+            if (valor != '') {
+                if (porcenta <= 15) {
+                    var url = "@Url.Action("Porcentaje", "Ventas")";
+                    var data = { valor: valor, porcenta: porcenta };
+
+                    $.post(url, data).done(function (data) {
+                        $('#txtTotalConDes').val(data);
+                        if (porcenta == ''){
+                            porcenta = 0;
+                            $('#txtDescuento').val(porcenta);
+                        }
+                    })
+                }
+                else {
+                    $('#txtDescuento').val('15');
+                    Descuento();
+                }
+            }
+
+        }
+    }
+
+        function QuickProductSearch() {
+        var CodRapido = $('#txtcodrapido').val();
+        var CodLista = $('#cbxlista').val();
+
+        var _url = '@System.Configuration.ConfigurationManager.AppSettings["quickProductSearch"]';
+
+        if (CodLista == '00') {
+            alert("Debe Seleccionar una Lista de Precio");
+        }
+        else {
+            if (CodRapido == '') {
+                $('#txtcodigoProducto').val('');
+                $('#txtdescripcionProducto').val('');
+                $('#txtprecioneto').val('');
+                $('#txtumedida').val('');
+                $('#txtcantidad').val('');
+                $('#txtstock').val('');
+                $('#txtdescripcion').val('');
+                $('#txtDescuento').val('0');
+            }
+            else {
+                $.ajax({
+                    url: _url,
+                    data: { CodRapido: CodRapido, CodLista: CodLista },
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (response) {
+                        $('#txtcodigoProducto').val(response[0].CodProd);
+                        $('#txtdescripcionProducto').val(response[0].DesProd);
+                        $('#txtprecioneto').val(response[0].PrecioVta);
+                        $('#txtumedida').val(response[0].codumed);
+                        $('#txtstock').val(response[0].Stock);
+                        $('#txtdescripcion').val(response[0].DesProd);
+                        $('#txtcantidad').focus();
+                    },
+                    error: function (response) {
+                        alert("Este Producto no se encuentra en esta lista de Precio");
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            }
+        }
+    }
+
+    var precioProducto = 0;
+
+    function ProductSearch() {
+        var CodProd = $('#txtdescripcion').val();
+        var CodLista = $('#cbxlista').val();
+        debugger
+        var _url = "@Url.Action("ProductSearch","Ventas")";
+
+        if (CodLista == '00') {
+            alert("Debe Seleccionar una Lista de Precio");
+        }
+        else {
+            if (CodProd == '') {
+                $('#txtcodigoProducto').val('');
+                $('#txtdescripcionProducto').val('');
+                $('#txtprecioneto').val('');
+                $('#txtumedida').val('');
+                $('#txtcantidad').val('');
+                $('#txtstock').val('');
+            }
+            else {
+                $("input#txtdescripcion").autocomplete(
+                {
+                        source: function (request, response) {
+                        $.ajax(
+                        {
+                            url: _url,
+                            data: { CodProd: CodProd, CodLista: CodLista },
+                            type: "POST",
+                            dataType: "json",
+                            async: false,
+                                success: function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        value: item.CodProd,
+                                        label: item.CodProd + '-' + item.DesProd,
+                                        precio: item.PrecioVta,
+                                        umedida: item.codumed,
+                                        nompro: item.DesProd,
+                                        Stock: item.Stock
+                                    };
+                                }));
+                            },
+                            error: function (response) {
+                                alert("No se encuentra producto con esas caracteristicas");
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    },
+                    minLength: 1,
+                        select: function (event, ui) {
+                        debugger
+                        $('#txtcodigoProducto').val(ui.item.value);
+                        $('#txtdescripcionProducto').val(ui.item.nompro);
+                        $('#txtprecioneto').val(ui.item.precio);
+                        precioProducto = ui.item.precio;
+                        $('#txtumedida').val(ui.item.umedida);
+                        $('#txtstock').val(ui.item.Stock);
+                        $(this).val(ui.item.label);
+                        $('#txtcantidad').focus();
+                        return false;
+                    }
+
+                });
+            }
+        }
+    }
+
+    
+        
+    function Multiplicar() {
+        var punitario = $('#txtprecioneto').val();
+        var cantidad = $('#txtcantidad').val();
+        var porcentaje = $('#txtDescuento').val();
+        if (cantidad == "") {
+            $('#txtsubtotal').val('');
+            $('#txtcantidad').val('');
+            $('#txtTotalConDes').val('');
+        }
+        else {
+            var url = "@Url.Action("Multiplicar", "Ventas")";
+            var data = { punitario: punitario, cantidad: cantidad };
+
+            $.post(url, data).done(function (data) {
+                $('#txtsubtotal').val(data);
+                if (porcentaje == 0) {
+                    $('#txtTotalConDes').val(data);
+                }
+                else {
+                    Descuento();
+                }
+            })
+        }
+    }
+
+    function valida(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+
+        //Tecla de retroceso para borrar, siempre la permite
+        if (tecla == 8) {
+            return true;
+        }
+
+        // Patron de entrada, en este caso solo acepta numeros
+        patron = /[0-9]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+    }
+
+    function eliminarFilas(filaDelete) {
+
+        var quitarId = filaDelete.replace('thproductolist', '');
+        var subtotal = "thvalordescuento" + quitarId;
+        var valor = $('#' + subtotal + '').val();
+        resta(valor);
+
+        $('#table tr.' + filaDelete).remove();
+    }
+
+    function suma(valor) {
+        valor = valor.replace('.', '');
+        var valortotal = $('#txttotal').val();
+        var totalfinal = parseFloat(valortotal) + parseFloat(valor);
+        var neto = totalfinal;
+        var iva = (parseFloat(neto) * parseFloat("0.19"));
+        var valorfinal = parseFloat(neto) + parseFloat(iva);
+        $('#txtimpuesto').val(Math.round(iva));
+        $('#lbimpuesto').html(Math.round(iva));
+        $('#txttotalfinal').val(Math.round(valorfinal));
+        $('#lbtotalfinal').html(Math.round(valorfinal));
+        $('#txttotal').val(Math.round(totalfinal));
+        $('#lbtotal').html(Math.round(totalfinal));
+    }
+
+    function resta(valor) {
+        valor = valor.replace('.', '');
+        var valortotal = $('#txttotal').val();
+        var totalfinal = parseFloat(valortotal) - parseFloat(valor);
+        var neto = totalfinal;
+        var iva = (parseFloat(neto) * parseFloat("0.19"));
+        var valorfinal = parseFloat(neto) + parseFloat(iva);
+        $('#txtimpuesto').val(Math.round(iva));
+        $('#lbimpuesto').html(Math.round(iva));
+        $('#txttotalfinal').val(Math.round(valorfinal));
+        $('#lbtotalfinal').html(Math.round(valorfinal));
+        $('#txttotal').val(Math.round(totalfinal));
+        $('#lbtotal').html(Math.round(totalfinal));
+    }
+
+
+    
+    function addRow() {
+        var txtdetalle = $('#txtdescripcion').val();
+        var contador = $('#contador_registros').val();
+        var image = '<img src="~/Image/delete.png" />';
+        var codigo = $('#txtcodigoProducto').val();
+        var descripcion = $('#txtdescripcionProducto').val();
+        var cantidad = ($('#txtcantidad').val());
+        var preciounitario = ($('#txtprecioneto').val());
+        var subtotal = ($('#txtsubtotal').val());
+        var medida = $('#txtumedida').val();
+        var descuento = $('#txtDescuento').val();
+        var valordescuento = ($('#txtTotalConDes').val());
+        var validador = 0;
+
+        var porcentaje = Math.round(precioProducto * 0.15);
+        var precioMax = (precioProducto - porcentaje);
+        
+        if (txtdetalle == "" || cantidad == "" || preciounitario == "" || preciounitario == "" || parseInt(preciounitario) < precioMax) {
+            if (parseInt(preciounitario) < precioMax) {
+                alert("Neto Ingresado Debe ser Hasta el 15% de Descuento");
+                $('#txtprecioneto').val(precioMax);
+                $('#txtsubtotal').val($('#txtprecioneto').val() * $('#txtcantidad').val());
+                $('#txtTotalConDes').val($('#txtprecioneto').val() * $('#txtcantidad').val());
+            }
+        }
+        else {
+            var max = $('#contador_registros').val();
+            console.log(max);
+            for (var i = 1; i <= max; i++) {
+                if ($('#thcodigo' + i).length) {
+                    var codigooo = $('#thcodigo' + i).val();
+                    if (codigo == codigooo) {
+                        validador = 1;
+                    }
+                }
+            }
+
+            if (validador == 0) {
+                var subtotal2 = cantidad * preciounitario;
+                var valordescuento2 = Math.round(subtotal2 - ((subtotal2 * descuento) / 100));
+
+                if (subtotal2 == subtotal && valordescuento2 == valordescuento) {
+                    // alert("SUB-TOTAL:" + subtotal2 + " VALOR: " + valordescuento2);
+                }
+                else {
+                    subtotal = (subtotal2).toString();
+                    valordescuento = (valordescuento2).toString();
+                }
+
+                suma(valordescuento);
+                var texto_insertar =
+                '<tr class="thproductolist' + contador + '">' +
+                 '<td><input type="text" name="thcodigo' + contador + '"           id="thcodigo' + contador + '"        value="' + codigo + '" readonly="readonly" size="10"></td>'
+                + '<td><input type="text" name="thdescripcion' + contador + '"     id="thdescripcion' + contador + '"   value="' + descripcion + '" readonly="readonly" ></td>'
+                + '<td><input type="text" name="thcantidad ' + contador + '"       id="thcantidad' + contador + '"      value="' + cantidad + '" readonly="readonly" size="10"></td>'
+                + '<td><input type="text" name="thmedida' + contador + '"          id="thmedida' + contador + '"        value="' + medida + '" readonly="readonly" size="10"></td>'
+                + '<td><input type="text" name="thpreciounitario' + contador + '"  id="thpreciounitario' + contador + '"value="' + preciounitario + '" readonly="readonly" size="10"></td>'
+                    + '<td><input type="text" name="thsubtotal' + contador + '"        id="thsubtotal' + contador + '"      value="' + subtotal + '"readonly="readonly" size="10"></td>'//
+                + '<td><input type="text" name="thdescuento' + contador + '"       id="thdescuento' + contador + '"     value="' + descuento + '" readonly="readonly" size="10"></td>'
+                    + '<td><input type="text" name="thvalordescuento' + contador + '"  id="thvalordescuento' + contador + '"value="' + valordescuento + '"  size="10" readonly="readonly"></td>'
+                + '<td><a id="thproductolist' + contador + '" href="#divCodigo" onclick="eliminarFilas(this.id);"><img src="../Image/delete.png" /></a></td>'
+                + '</tr>';
+
+                var nuevo_campo = $(texto_insertar);
+                $("#generaTabla").append(nuevo_campo);
+
+                contador++;
+                $('#contador_registros').val(contador);
+                $('#txtcodigoProducto').val('');
+                $('#txtdescripcionProducto').val('');
+                $('#txtprecioneto').val('');
+                $('#txtumedida').val('');
+                $('#txtcantidad').val('');
+                $('#txtsubtotal').val('');
+                $('#txtdescripcion').val('');
+                $('#txtstock').val('');
+                $('#txtdescripcion').val('');
+                $('#txtDescuento').val('0');
+                $('#txtTotalConDes').val('');
+                $('#txtcodrapido').val('');
+
+                $('#txtcodrapido').focus();
+            }
+            else {
+                alert("Este Producto ya está Ingresado, Si desea agregar más productos debe quitarlo de la lista y luego volver a agregarlo");
+            }
+        }
+    }
+
+    function agregarnotadeventa() {
+        var max = $('#contador_registros').val();
+        var detalleexi = 0;
+        for (var i = 1; i <= max; i++) {
+            if ($('#thcodigo' + i).length) {
+                detalleexi = 1;
+            }
+        }
+        var validespa = $('#cbxDireccion').val();
+        //var valiconta = $('#txtcontacto0').val();
+
+        if (detalleexi == '0') {
+            alert("Debe Agregar productos para insertar una Nota de de venta Interna");
+        }
+        else {
+            var max = $('#contador_registros').val();
+            var nvlineas = 0;
+            for (var i = 1; i <= max; i++){
+                debugger
+                if ($('#thcodigo' + i).length) {
+                    nvlineas = nvlineas + 1;
+                    var CodProd = $('#thcodigo' + i).val();
+                    var DetProd = $('#thdescripcion' + i).val();
+                    var nvCant = $('#thcantidad' + i).val();
+                    var CodUMed = 'UN';
+
+                    var nvPrecio = $('#thpreciounitario' + i).val();
+                    var nvSubTotal = $('#thsubtotal' + i).val();
+                    var nvTotLinea = $('#thvalordescuento' + i).val();
+                    var NVNumero = $('#txtnventa').val();
+                    var nvLinea = nvlineas;
+                    var nvFecCompr = $('#txtfechapedido').val();
+
+                    var url = "@Url.Action("Detallenv", "Ventas")";
+                    var data = {
+                        CodProd: CodProd,
+                        DetProd: DetProd,
+                        nvCant: nvCant,
+                        CodUMed: CodUMed,
+                        nvPrecio: nvPrecio,
+                        CodLista: CodLista,
+                        nvSubTotal: nvSubTotal,
+                        nvTotLinea: nvSubTotal,
+                        NVNumero: NVNumero,
+                        nvLinea: nvLinea,
+                        nvFecCompr: nvFecCompr
+                    };
+                   // $.post(url, data);
+                    $.ajax({
+                        type: 'post',
+                        url: url,
+                        dataType: 'json',
+                        data: data,
+                        async: false
+                    });
+                }
+            }
+
+
+            var NomCon2;
+            var vcontactos = $('#txtVcontacto').val();
+            if (vcontactos == '1') {
+                var CodAux2 = $('#txtcliente').val();
+                var NomCon = $('#txtcontacto1').val();
+                NomCon2 = NomCon;
+            }
+            else {
+                var CodAux2 = $('#txtcliente').val();
+                var NomCon = $('#txtcontacto0').val();
+                NomCon2 = NomCon;
+                var url = "@Url.Action("AgregarContacto", "Ventas")";
+                var data = {
+                    CodAux: CodAux2,
+                    NomCon: NomCon
+                };
+
+                $.post(url, data)
+
+            }
+
+            var NVNumero = $('#txtnventa').val();
+            var nvFem = $('#txtfechapedido').val();
+            var nvFeEnt = $('#txtfechaentrega').val();
+            var CodAux = $('#txtcliente').val();
+            var VenCod = $('#txtvendedor').val();
+            var CodLista = $('#cbxlista').val();
+            var nvObser = $('#txtobservacion').val();
+            var CveCod = $('#cbxconven').val();
+            var CodiCC = $('#cbxccosto').val();
+            var nvSubTotal = $('#txttotal').val();
+            var nvMonto = $('#txttotalfinal').val();
+            var nvNetoAfecto = $('#txttotal').val();
+
+            var Usuario = $('#txtnomvendedor').val();
+            var UsuarioGeneraDocto = $('#txtnomvendedor').val();
+
+            var FechaHoraCreacion = $('#txtfechapedido').val();
+            var TotalBoleta = $('#txttotalfinal').val();
+            var id = $('#txtid').val();
+            var CodLugarDesp = '';
+            if (validespa == 'No Tiene Dirección Asociado') {
+            }
+            else {
+                CodLugarDesp = $('#cbxDireccion').val();
+            }
+
+            var CorreoCliente = $("#txtCorreoCliente").val();
+
+            var url = "@Url.Action("AgregarNV", "Ventas")";
+
+            var data = {
+                NVNumero: NVNumero,
+                nvFem: nvFem,
+                nvFeEnt: nvFeEnt,
+                CodAux: CodAux,
+                VenCod: VenCod,
+                CodLista: CodLista,
+                nvObser: nvObser,
+                CveCod: CveCod,
+                NomCon: NomCon2,
+                CodiCC: CodiCC,
+                nvSubTotal: nvSubTotal,
+                nvMonto: nvMonto,
+                nvNetoAfecto: nvNetoAfecto,
+                Usuario: Usuario,
+                UsuarioGeneraDocto: UsuarioGeneraDocto,
+                FechaHoraCreacion: FechaHoraCreacion,
+                TotalBoleta: TotalBoleta,
+                id: id,
+                CodLugarDesp: CodLugarDesp,
+                NomCon: NomCon
+            };
+
+            //console.log(data);
+            if (CorreoCliente == "" || CorreoCliente == null) {
+                alert("Cliente no tiene Correo Asignado");
+                var url = $("#NV").val(); location.href = url;
+            }
+            else {
+                $.post(url, data).done(function (data) {
+                if (data == null) {
+                    alert("Cliente no tiene Correo Asignado");
+                }
+                confirm("Se Genero Cotización" + " " + NVNumero);
+                var url = $("#RedirectTo").val(); location.href = url;
+
+                //Window.location.href = '/Ventas/Misclientes/' + id;
+            });
+            }
+
+        }
+    }
+</script>

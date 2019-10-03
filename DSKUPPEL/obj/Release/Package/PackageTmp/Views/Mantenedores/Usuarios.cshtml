@@ -1,0 +1,94 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "Usuarios";
+    List<UsuariosModels> listarusuarios = ViewBag.usuarios;
+    string[] idUsuarios = new string[listarusuarios.Count];
+}
+
+<link href="~/Scripts/css/estilotables.css" rel="stylesheet" />
+<body class="contact-page">
+
+    <div id="ModalMap" class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="crumbs">
+                    <ul>
+                        <li><a href='@Url.Action("Index", "Index")'>Inicio</a></li>
+                        <li><a href='@Url.Action("Usuarios", "Mantenedores")'>Usuarios</a></li>
+                    </ul>
+                </div>
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Usuarios</h1>
+
+                        <div class="col-full">
+                            <div align=right>
+                                <a id="iframe" class="button" href='@Url.Action("AddUsuario", "Mantenedores")'> Nuevo Usuario </a>
+                            </div>
+
+                            <div class="table-responsive2">
+                                <div class="wrap-col">
+                                    <table id="dataTable" class="table2" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Codigo</th>
+                                                <th>Usuario</th>
+                                                <th>Email</th>
+                                                <th>Tipo Usuario</th>
+                                                <th>Editar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                for (int i = 0; i < listarusuarios.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@listarusuarios[i].id</td>
+                                                        <td>@listarusuarios[i].Usuario</td>
+                                                        <td>@listarusuarios[i].email</td>
+                                                        <td>@listarusuarios[i].tipoUsuario</td>
+                                                        <td>
+                                                            <a id="iframe" href='@Url.Action("EditUsuarios", "Mantenedores", new {idUsuario = @listarusuarios[i].id})'><img src="~/Image/edit.png"></a>
+                                                            @{idUsuarios[i] = listarusuarios[i].id.ToString();}
+                                                            <a id="EliminarUser" onclick="EliminarUsuario(@listarusuarios[i].id)" style="cursor:pointer;"><img src="~/Image/delete.png"></a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </section>
+        <script>
+            function EliminarUsuario(id) {
+                var mensaje;
+                var _url = "@Url.Action("EliminarUsuario", "Mantenedores")";
+            var opcion = confirm("Desea Eliminar Usuario?");
+            if (opcion == true) {
+            $.ajax({
+            type: 'POST',
+            url: _url,
+            data: {
+                _Id: id,
+            },
+            success: function (data) {
+                alert("El Usuario fue Eliminado");
+                location.reload();
+            }
+            });
+            }
+            else {
+                mensaje = "Has clickado Cancelar";
+            }
+            }
+        </script>
+    </div>
+</body>
+
+

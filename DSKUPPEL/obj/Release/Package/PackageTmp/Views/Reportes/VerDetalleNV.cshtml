@@ -1,0 +1,307 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "VerDetalleNV";
+    List<NotadeVentaCabeceraModels> cabecera = ViewBag.cabecera;
+    List<NotaDeVentaDetalleModels> detalle = ViewBag.detalle;
+    var mensaje = ViewBag.mensaje;
+    var nvNum = ViewBag.NVnum;
+    Layout = null;
+
+    if (Session["VenCod"] == null)
+    {
+        var URL = System.Configuration.ConfigurationManager.AppSettings.Get("url");
+        Response.Redirect(URL);
+    }
+}
+
+<link rel="stylesheet" href="~/Scripts/css/zerogrid.css">
+<link rel="stylesheet" href="~/Scripts/css/style.css">
+<link rel="stylesheet" href="~/Scripts/css/lightbox.css">
+<link rel="stylesheet" href="~/Scripts/css/menu.css">
+
+@*<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/js/locationpicker.jquery.js"></script>*@
+
+<style type="text/css">
+    body {
+        width: 900px;
+        margin: 20px auto;
+        font-size: 14px;
+        font-family: Verdana, Geneva, sans-serif;
+        text-transform: uppercase !important;
+    }
+
+    .titulo {
+        background: url(images/products_24x24.png) 6px 6px no-repeat;
+        padding: 10px 6px 10px 40px !important;
+        border-bottom: 2px solid #c4dcff;
+    }
+
+    .row {
+        width: 900px;
+        float: right;
+        border-bottom: 1px dotted #999999;
+    }
+
+    .col1 {
+        width: 170px;
+        float: right;
+        color: #999;
+        padding: 5px 15px;
+    }
+
+    .col2 {
+        width: 20px;
+        float: right;
+        color: #999;
+        padding: 5px 15px;
+    }
+
+    .col3 {
+        width: 620px;
+        float: right;
+        padding: 5px 15px;
+    }
+
+    table {
+        width: 900px;
+        border-collapse: collapse;
+    }
+
+        table thead {
+            background: #333;
+            color: #FFF;
+            border: 1px solid #999;
+        }
+
+        table td, table th {
+            border: 1px solid #999;
+            padding: 10px;
+            font-size: 10px;
+            color: black;
+        }
+
+    .td1 {
+        width: 40px;
+    }
+
+    .td2 {
+        width: 60px;
+    }
+
+    .td3 {
+        width: 360px;
+    }
+
+    .td4 {
+        width: 60px;
+    }
+
+    .td5 {
+        width: 60px;
+    }
+
+    .td6 {
+        width: 60px;
+    }
+
+    .td7 {
+        width: 60px;
+    }
+
+    .td8 {
+        width: 100px;
+    }
+
+    .ta-r {
+        text-align: right;
+    }
+
+    .highlighted_01 {
+        background: #FFFFCC;
+    }
+
+    table tr.totales td {
+        border: 0px none !important;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    div.table-responsive, h3 {
+        width: 100% !important;
+    }
+
+    .clearing {
+        clear: both;
+        margin-bottom: 30px;
+    }
+
+    table thead th td {
+        color: white;
+    }
+
+    table thead td, table thead th {
+        color: white;
+    }
+
+
+
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
+</style>
+
+
+<div class="titulo_pagina">
+
+</div>
+@if (mensaje != 1)
+{
+
+    <div class="row col-md-10">
+        <div class="col-md-6">
+            <table class="registros registrosLight registros_1 col-md-5">
+                <tr>
+                    <th nowrap="nowrap">N&ordm; Int.</th>
+                    <td>@cabecera[0].NVNumero</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Vendedor</th>
+                    <td>@cabecera[0].VenCod - @cabecera[0].Usuario</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Cond. Venta</th>
+                    <td>@cabecera[0].CveCod - @cabecera[0].CveDes</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Fecha Pedido</th>
+                    <td>@cabecera[0].nvFem.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Fecha Entrega</th>
+                    <td>@cabecera[0].nvFeEnt.ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Lista de Precio</th>
+                    <td>@cabecera[0].CodLista  - @cabecera[0].DesLista</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Cod. Cliente</th>
+                    <td>@cabecera[0].CodAux  - @cabecera[0].NomAux</td>
+
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Contacto</th>
+                    <td>@cabecera[0].NomCon</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Centro de Costo</th>
+                    <td>@cabecera[0].CodiCC - @cabecera[0].DescCC</td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap">Detalle</th>
+                    <td>@cabecera[0].nvObser</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <div class="clearing"></div>
+    <div class="table-responsive">
+        <div class="row col-md-10">
+            <table class="registros table table-hover " id="dataTablePopUp">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <th nowrap="nowrap">Codigo Producto</th>
+                        <th>Detalle Producto</th>
+                        <th>Cantidad</th>
+                        <th>Stock</th>
+                        <th>U. Medida</th>
+                        <th>Precio</th>
+                        <th>Sub Total</th>
+                        <th>Desc.%</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        for (int i = 0; i < detalle.Count; i++)
+                        {
+                            {
+                                if (@detalle[i].Stock < @detalle[i].nvCant)
+                                {
+                                    <tr id=i>
+                                        <td>@detalle[i].nvLinea</td>
+                                        <td nowrap="nowrap">@detalle[i].CodProd</td>
+                                        <td nowrap="nowrap">@detalle[i].DesProd</td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].nvCant</td>
+                                        <td nowrap="nowrap" class="ta-r bg-danger">@detalle[i].Stock</td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].CodUMed</td>
+                                        <td nowrap="nowrap" class="ta-r">@double.Parse(detalle[i].nvPrecio.ToString()).ToString("N0")</td>
+                                        <td class="ta-r">
+                                            <strong>@double.Parse(detalle[i].nvSubTotal.ToString()).ToString("N0")</strong>
+                                        </td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].nvDPorcDesc01</td>
+                                        <td class="ta-r">
+                                            <strong>@double.Parse(detalle[i].nvTotLinea.ToString()).ToString("N0")</strong>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr id=i>
+                                        <td>@detalle[i].nvLinea</td>
+                                        <td nowrap="nowrap">@detalle[i].CodProd</td>
+                                        <td nowrap="nowrap">@detalle[i].DesProd</td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].nvCant</td>
+                                        <td nowrap="nowrap" class="ta-r bg-success">@detalle[i].Stock</td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].CodUMed</td>
+                                        <td nowrap="nowrap" class="ta-r">@double.Parse(detalle[i].nvPrecio.ToString()).ToString("N0")</td>
+                                        <td class="ta-r">
+                                            <strong>@double.Parse(detalle[i].nvSubTotal.ToString()).ToString("N0")</strong>
+                                        </td>
+                                        <td nowrap="nowrap" class="ta-r">@detalle[i].nvDPorcDesc01</td>
+                                        <td class="ta-r">
+                                            <strong>@double.Parse(detalle[i].nvTotLinea.ToString()).ToString("N0")</strong>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        }
+                    }
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="ta-r" colspan="8" align="right"><strong>Sub-Total</strong></td>
+                        <td class="ta-r"><strong>@double.Parse(cabecera[0].nvSubTotal.ToString()).ToString("N0")</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="ta-r" colspan="8" style="{text-align: right !important}"><strong>Impuesto</strong></td>
+                        <td class="ta-r"><strong>@double.Parse((cabecera[0].TotalBoleta - cabecera[0].nvSubTotal).ToString()).ToString("N0")</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="ta-r" colspan="8" align="right"><strong>Total Final</strong></td>
+                        <td class="ta-r"><strong>@double.Parse(cabecera[0].TotalBoleta.ToString()).ToString("N0")</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row col-md-10">
+        <div class="col-md-6">
+            <label class="label-info">No se encontró el documento. @nvNum</label>
+        </div>
+    </div>
+}
+

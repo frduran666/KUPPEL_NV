@@ -1,0 +1,127 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "AddUsuario";
+    List<UsuariosTiposModels> tipo = ViewBag.tipo;
+    List<VendedoresSoftlandModels> vendedor = ViewBag.vendedor;
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Scripts/css/zerogrid.css">
+<link rel="stylesheet" href="~/Scripts/css/style.css">
+<link rel="stylesheet" href="~/Scripts/css/lightbox.css">
+<link rel="stylesheet" href="~/Scripts/css/menu.css">
+
+<body class="contact-page">
+    <div class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Mantenedor de Usuarios</h1>
+                        @Html.Raw(TempData["Mensaje"])
+                        <div class="col-full">
+                            <div class="wrap-col">
+                                <div class="contact">
+                                    <div id="contact_form">
+                                        <form name="form1" id="ff" method="post" action="@Url.Action("AddUsuario", "Mantenedores")">
+
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Usuario:</h6>
+                                                        <input type="text" name="txtUsuario" id="txtUsuario" placeholder="Nombre" required="required" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Email:</h6>
+                                                        <input type="text" name="txtEmail" id="txtEmail" placeholder="Email" required="required" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Contraseña:</h6>
+                                                        <input type="password" name="txtContrasena" id="txtContrasena" placeholder="Contraseña" required="required" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Perfil de Usuario:</h6>
+                                                        <select name="cbxTipo" id="cbxTipo" tabindex="4">
+                                                            <option value="00"> -- Seleccione Perfil -- </option>
+                                                            @{
+                                                                if (tipo.Count > 0)
+                                                                {
+                                                                    for (int i = 0; i < tipo.Count; i++)
+                                                                    {
+                                                                        <option value="@tipo[i].id"> @tipo[i].tipoUsuario </option>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    @Html.Raw(TempData["Mensaje"])
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Vendedor Softland:</h6>
+                                                        <select name="cbxUsuarioSoftland" id="cbxUsuarioSoftland" tabindex="4">
+                                                            <option value="00"> -- Seleccione Vendedor -- </option>
+                                                            @{
+                                                                for (int i = 0; i < vendedor.Count; i++)
+                                                                {
+                                                                    <option value="@vendedor[i].VenCod"> @vendedor[i].VenDes </option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <table>
+                                                            <tr>
+                                                                <th><center><input class="sendButton" type="submit" name="btnAgregar" id="btnAgregar" value=" Agregar Usuario "></center></th>
+
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </section>
+    </div>
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script>
+
+</script>
+

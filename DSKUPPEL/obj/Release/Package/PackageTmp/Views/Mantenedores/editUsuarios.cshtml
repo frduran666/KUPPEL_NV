@@ -1,0 +1,122 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "EditUsuarios";
+    List<UsuariosModels> buscarUsuarios = ViewBag.buscarusuarios;
+    List<UsuariosTiposModels> tipo = ViewBag.tipo;
+    List<VendedoresSoftlandModels> vendedorSoftland = ViewBag.vendedorSoftland;
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Scripts/css/zerogrid.css">
+<link rel="stylesheet" href="~/Scripts/css/style.css">
+<link rel="stylesheet" href="~/Scripts/css/lightbox.css">
+<link rel="stylesheet" href="~/Scripts/css/menu.css">
+
+<body class="contact-page">
+    <div class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Mantenedor de Usuarios</h1>
+
+                        <div class="col-full">
+                            <div class="wrap-col">
+                                <div class="contact">
+                                    <div id="contact_form">
+                                        <form name="form1" id="ff" method="post" action="@Url.Action("EditUsuarios", "Mantenedores")">
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Codigo:</h6>
+                                                        <input type="text" name="txtCodigo" id="txtCodigo" placeholder="Cod" required="required" disabled="disabled" value="@buscarUsuarios[0].id" />
+                                                        <input type="hidden" name="hdCodigo" id="hdCodigo" value="@buscarUsuarios[0].id" />
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Usuario:</h6>
+                                                        <input type="text" name="txtUsuario" id="txtUsuario" placeholder="Nombre" required="required" value="@buscarUsuarios[0].Usuario" />
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Email:</h6>
+                                                        <input type="text" name="txtEmail" id="txtEmail" placeholder="Email" required="required" value="@buscarUsuarios[0].email" />
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Perfil de Usuario:</h6>
+                                                        <select name="perfil" id="perfil" tabindex="4">
+                                                            <option value="00"> -- Seleccione Perfil -- </option>
+                                                            @{
+                                                                for (int i = 0; i < tipo.Count; i++)
+                                                                {
+                                                                    if (@tipo[i].tipoUsuario == @buscarUsuarios[0].tipoUsuario)
+                                                                    {
+                                                                        <option selected value="@tipo[i].id"> @tipo[i].tipoUsuario </option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@tipo[i].id"> @tipo[i].tipoUsuario </option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Vendedor Softland:</h6>
+                                                        <select name="vendedor" id="vendedor" tabindex="4">
+                                                            <option value="00"> -- Seleccione Vendedor Softland -- </option>
+                                                            @{
+                                                                for (int i = 0; i < vendedorSoftland.Count; i++)
+                                                                {
+                                                                    if (@vendedorSoftland[i].VenCod.Trim() == @buscarUsuarios[0].VenCod.Trim())
+                                                                    {
+                                                                        <option selected value="@vendedorSoftland[i].VenCod"> @vendedorSoftland[i].VenDes </option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@vendedorSoftland[i].VenCod"> @vendedorSoftland[i].VenDes </option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <label class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <table>
+                                                            <tr>
+                                                                <th><center><input class="sendButton" type="submit" name="btnEditar" id="btnEditar" value="Editar"></center></th>
+                                                                <th><center><input class="sendButton" type="submit" name="btnEliminar" id="btnEliminar" value="Eliminar"></center></th>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </section>
+    </div>
+</body>

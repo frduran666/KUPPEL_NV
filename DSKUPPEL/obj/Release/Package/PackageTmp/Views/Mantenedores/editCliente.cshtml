@@ -1,0 +1,117 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "EditCliente";
+    List<ClientesModels> buscarclientes = new List<ClientesModels>();
+
+    if ((List<ClientesModels>)Session["buscarCliente"] != null)
+    {
+        buscarclientes = (List<ClientesModels>)Session["buscarCliente"];
+    }
+
+    var longitud = "123";
+    var latitud = "123";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/Scripts/css/zerogrid.css">
+<link rel="stylesheet" href="~/Scripts/css/style.css">
+<link rel="stylesheet" href="~/Scripts/css/lightbox.css">
+<link rel="stylesheet" href="~/Scripts/css/menu.css">
+
+<script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyDzRSaM9JymiqoUaNVMayH3G5XykA2ieFQ'></script>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="~/Scripts/js/locationpicker.jquery.js"></script>
+
+<body class="contact-page">
+    <div id="ModalMap" class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Cliente</h1>
+                        <div class="col-1-3">
+                            <div class="wrap-col">
+                                <div class="contact">
+                                    <center></center>
+                                    <div id="contact_form">
+                                        <form name="form1" id="ff" method="post" action="@Url.Action("EditCliente", "Mantenedores")">
+                                            <input type="hidden" name="txtcodAux" id="txtcodAux" value="@buscarclientes[0].CodAux">
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Nombre:</h6>
+                                                        <input type="text" name="txtnombre" id="txtnombre" placeholder="Nombre" required="required" value="@buscarclientes[0].NomAux">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Rut:</h6>
+                                                        <input type="text" name="txtrut" id="txtrut" placeholder="Rut" required="required" value="@buscarclientes[0].RutAux">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Contacto:</h6>
+                                                        <input type="text" name="txtcontacto" id="txtcontacto" placeholder="Contacto" required="required" value="@buscarclientes[0].NomCon">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Contacto:</h6>
+                                                        <input type="text" name="txtemail" id="txtemail" placeholder="Email" value="@buscarclientes[0].EMail">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Telefono:</h6>
+                                                        <input type="text" name="txttelefono" id="txttelefono" placeholder="Telefono" required="required" value="@buscarclientes[0].FonCon">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-full">
+                                                    <div class="wrap-col">
+                                                        <h6>Direccion:</h6>
+                                                        <input type="text" name="txtdireccion" id="txtdireccion" placeholder="Direccion" required="required" value="@buscarclientes[0].DirAux">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <center><input class="sendButton" type="submit" name="Guardar" value="Guardar"></center>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2-3">
+                            <div class="wrap-col">
+                                <input type="text" name="maps" cssclas="form-control" id="ModalMapaddress" placeholder="maps" required="required" value="maps">
+                                <div class="wrap-col" id="ModalMapPreview" style="width:100%; height:400px;">
+                                </div>
+                                <div class="clearfix">
+                                    &nbsp;
+                                </div>
+                                <script>
+                                    $('#ModalMapPreview').locationpicker({ radius: 0, location: { latitude: -33.3306539, longitude: -70.7049253 }, enableAutocomplete: true, inputBinding:{latitudeInput: $(@latitud), longitudeInput: $(@longitud), locationNameInput: $('#ModalMapaddress') } });
+                                    $('#ModalMap').on('shown.bs.modal', function () { $('#ModalMapPreview').locationpicker('autoseze') });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
+

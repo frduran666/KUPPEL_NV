@@ -1,0 +1,9 @@
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\bin\Release\DAL.dll
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\bin\Release\DAL.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\bin\Release\log4net.dll
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\bin\Release\log4net.xml
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csproj.CoreCompileInputs.cache
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csproj.CopyComplete
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.dll
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csprojAssemblyReference.cache

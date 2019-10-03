@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Login";
+    string user = ViewBag.usermodel;
+    string pass = ViewBag.passmodel;
+    string alerta = ViewBag.alerta;
+    string view = ViewBag.views;
+    string controllers = ViewBag.controllers;
+    Layout = null;
+}
+
+
+<head>
+    <title>KUPPEL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link href="~/Scripts/css/stylelogin.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <br />
+    <div id="login">
+
+
+        <form action="@Url.Action("Login" ,  "Index" )" name='form-login' method="post">
+            <span class="fontawesome-user"></span>
+            <input type="text" id="__usuario" name="__usuario" placeholder="Usuario">
+
+            <span class="fontawesome-lock"></span>
+            <input type="password" id="__password" name="__password" placeholder="Contraseña">
+
+            @Html.Raw(TempData["Mensaje"])
+            <br />
+            <input type="submit" value="Login" class="active">
+        </form>
+
+
+    </div>
+
+
+
+</body>

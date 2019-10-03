@@ -1,0 +1,107 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "MisClientes";
+    List<ClientesModels> clientes = ViewBag.clientes;
+
+    if (Session["VenCod"] == null)
+    {
+        var URL = System.Configuration.ConfigurationManager.AppSettings.Get("url");
+        Response.Redirect(URL);
+    }
+}
+
+<link href="~/Scripts/css/estilotables.css" rel="stylesheet" />
+
+
+<body class="contact-page">
+
+    <div id="ModalMap" class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="crumbs">
+                    <ul>
+                        <li><a href='@Url.Action("Index", "Index")'>Inicio</a></li>
+                        <li><a href='@Url.Action("Misclientes", "Ventas")'>Mis Clientes</a></li>
+                    </ul>
+                </div>
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Listado De los Clientes</h1>
+                        @Html.Raw(TempData["Mensaje"])
+                        <div class="col-full">
+                            <div class="table-responsive2">
+                                <div class="wrap-col">
+                                    <table id="dataTable" class="table2" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>CodAux</th>
+                                                <th>Cliente</th>
+                                                <th>Dirección</th>
+                                                <th>Telefono</th>
+                                                <th>Notas</th>
+                                                <th>Deuda Vencida</th>
+                                                <th>Deuda Total</th>
+                                                <th>Linea Credito</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                try
+                                                {
+                                                    for (int i = 0; i < clientes.Count; i++)
+                                                    {
+                                                        <tr>
+                                                            <!--<td ><input type="text"  value="@clientes[i].CodAux" id="codaux" readonly="readonly" /></td> -->
+                                                            <td>@clientes[i].CodAux</td>
+                                                            <td>@clientes[i].NomAux</td>
+                                                            <td>@clientes[i].DirAux @clientes[i].DirNum</td>
+                                                            <td>@clientes[i].FonAux1</td>
+
+                                                            @{
+                                                                if (clientes[i].Notas == null)
+                                                                {
+                                                                    <td>No cuenta con nota</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@clientes[i].Notas</td>
+                                                                }
+                                                            }
+                                                            <td> $ @clientes[i].Deuda</td>
+                                                            <td> @clientes[i].DeudaVencida</td>
+                                                            <td>
+                                                                <!--<input  type="button" value="Deuda" id="deuda"/>-->
+                                                                <!--<a id="iframe" href='@Url.Action("DeudaCliente", "Ventas", new { codigo = @clientes[i].CodAux})'>Deuda</a> -->
+                                                                @clientes[i].Credito
+                                                            </td>
+                                                            <td>
+                                                                <a href='@Url.Action("NotadeVenta", "Ventas", new { CodAux = @clientes[i].CodAux, NomAux = @clientes[i].NomAux, anterior = "1" })'><img src="~/Image/guia.png"></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>Este Usuario no tiene Clientes Asociados</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+

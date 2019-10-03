@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "_Layout";
+
+    if (Session["tipoId"] == null)
+    {
+        Response.Redirect("https://http://200.6.117.116:8010/");
+    }
+
+    int tipoid = int.Parse(Session["TipoId"].ToString());
+    string user = Session["Nombre"].ToString();
+    string VenDes = Session["VenDes"].ToString();
+    int id = int.Parse(Session["ID"].ToString());
+    string VenCod = Session["VenCod"].ToString();
+}
+
+<!DOCTYPE html>
+<head>
+    <title>DS-KUPPEL</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="~/Scripts/css/zerogrid.css">
+    <link rel="stylesheet" href="~/Scripts/css/style.css">
+    <link rel="stylesheet" href="~/Scripts/css/lightbox.css">
+    <link rel="stylesheet" href="~/Scripts/css/menu.css">
+
+    <!--
+    <link rel="stylesheet" href="~/Scripts/js/fancybox/source/jquery.fancybox.css" />
+    <link rel="stylesheet" href="~/Scripts/js/jquery-datatables/media/css/jquery.dataTables.css" />-->
+
+</head>
+
+<body class="home-page">
+
+
+    <script src="~/Scripts/js/jquery1111.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/js/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/Scripts/js/locationpicker.jquery.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyDzRSaM9JymiqoUaNVMayH3G5XykA2ieFQ'></script>
+    <script src="~/Scripts/js/jquery-1.11.1.js"></script>
+    <link href="~/Scripts/js/jquery-datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <script src="~/Scripts/js/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <link href="~/Scripts/js/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+    <script src="~/Scripts/js/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script src="~/Scripts/js/fancybox/source/jquery.fancybox.js"></script>
+    <script src="~/Scripts/js/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "&nbsp;",
+                    "sEmptyTable": "&nbsp;",
+                    "sInfo": "Encontrados: _TOTAL_ Registros (Mostrando del _START_ al _END_)",
+                    "sInfoEmpty": "* No se han encontrado resultados en la búsqueda",
+                    "sInfoFiltered": "",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                aoColumnDefs: [{ 'bSortable': false, 'aTargets': ['no-sortable'] }]
+            });
+
+            $("#iframe").fancybox({
+                width: '85%',
+                height: '60%',
+                autoScale: false,
+                transitionIn: 'elastic',
+                transitionOut: 'elastic',
+                type: 'iframe'
+            });
+        });
+    </script>
+    <div class="container">
+        <div class="wrap-body">
+            <div class="header">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id='cssmenu'>
+                            <ul>
+                                <li class="active"><a href='@Url.Action("Index", "Index")'><span>DS-KUPPEL</span></a></li>
+                                @if (tipoid == 1)
+                                {
+                                    <li class='has-sub'>
+                                        <a href='#'><span>Mantenedores</span></a>
+                                        <ul>
+                                            <li class='last'>
+                                                <a href='@Url.Action("Clientes", "Mantenedores")'><span>Cliente</span></a>
+                                            </li>
+                                            <li class='last'>
+                                                <a href='@Url.Action("Usuarios", "Mantenedores")'><span>Usuarios</span></a>
+                                            </li>
+                                            <!-- <li class='last'>
+                                                 <a href='@Url.Action("Parametros", "Mantenedores")'><span>Parametros</span></a>
+                                             </li>-->
+                                        </ul>
+                                    </li>
+                                    <li class='has-sub'>
+                                        <a href='#'><span>Reportes</span></a>
+                                        <ul>
+                                            <li class='has-sub'>
+                                                <a href='#'><span>Nota de Venta</span></a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="@Url.Action("FacturasPendientes", "Reportes")"><span>Notas de Venta Pendiente</span></a>
+                                                    </li>
+
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    @*<li class=' has-sub'>
+                                            <a href='#'><span>Ventas</span></a>
+                                                <ul>
+                                                    <li class='has-sub'>
+                                                        <a href='@Url.Action("Misclientes", "Ventas", new { ID = id })'><span>Realizar Venta</span></a>
+                                                        <ul>
+                                                            <li>
+                                                                <a href='@Url.Action("Misclientes", "Ventas", new { ID = id })'><span>Mis Clientes</span></a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                        </li>*@
+
+                                }
+                                else if (user == "aprobador")
+                                {
+                                    <li class='has-sub'>
+                                        <a href='#'><span>Ventas</span></a>
+                                        <ul>
+                                            <li class='has-sub'>
+                                                <a href='@Url.Action("Misclientes", "Ventas", new { cod = VenCod, ID = id })'><span>Realizar Venta</span></a>
+                                                <ul>
+                                                    <li>
+                                                        <a href='@Url.Action("Misclientes", "Ventas", new { cod = VenCod, ID = id })'><span>Mis Clientes</span></a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
+                                else if (tipoid == 2)
+                                {
+                                    <li class='has-sub'>
+                                        <a href='#'><span>Ventas</span></a>
+                                        <ul>
+                                            <li class='has-sub'>
+                                                <a href='@Url.Action("Misclientes", "Ventas", new { cod = VenCod, ID = id })'><span>Realizar Venta</span></a>
+                                                <ul>
+                                                    <li>
+                                                        <a href='@Url.Action("Misclientes", "Ventas", new { cod = VenCod, ID = id  })'><span>Mis Clientes</span></a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
+
+                                <li class="active " style="float:right"><a href="@Url.Action("Login", "Index")"><span>Cerrar Sesion</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                @if (@VenDes != null)
+                {
+                    <div id="dvUser" class="active" style="text-align:right;color:black;"><span>Usuario: </span><label id="lblUser">@user</label></div>
+                    <div id="dvVendedor" class="active" style="text-align:right;color:black;"><span>Vendedor Softland: </span><label id="lblUser">@VenDes</label></div>
+                }
+            </div>
+
+
+
+
+
+            @RenderBody()
+            <footer>
+                <div class="copyright">
+                    <div class="zerogrid wrapper">
+                        <p>&copy; @DateTime.Now.Year -Disofi</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,81 @@
+﻿@using DSKUPPEL.Models;
+
+@{
+    List<NotaDeVentaDetalleModels> NVD = ViewBag.NVD;
+    ViewBag.Title = "ListarNotasdeDetalle";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+    if (Session["VenCod"] == null)
+    {
+        var URL = System.Configuration.ConfigurationManager.AppSettings.Get("url");
+        Response.Redirect(URL);
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListarNotasdeDetalle</title>
+</head>
+<body>
+
+    <table class="registros registrosLight registros_1 col-md-5">
+        <tr>
+            <td nowrap="nowrap">ID</td>
+            <th nowrap="nowrap">Codigo Producto</th>
+            <th nowrap="nowrap">Detalle Producto</th>
+            <th nowrap="nowrap">Cantidad</th>
+            <th nowrap="nowrap">U. Medida</th>
+            <th nowrap="nowrap">Precio</th>
+            <th nowrap="nowrap">Sub Total</th>
+            <th nowrap="nowrap">Desc.%</th>
+            <th nowrap="nowrap">Total</th>
+            <th nowrap="nowrap">Stock</th>
+
+            <th></th>
+        </tr>
+        @{
+
+            for (int i = 0; i < NVD.Count; i++)
+            {
+
+                <tr id=i>
+                    <td nowrap="nowrap">
+                        @NVD[i].nvLinea
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].CodProd
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].DesProd
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].nvCant
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].CodUMed
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].nvPrecio
+                    </td>
+                    <td nowrap="nowrap">
+                        @NVD[i].nvSubTotal
+                    </td>
+                    <td nowrap="nowrap" class="ta-r">@NVD[i].nvDPorcDesc01</td>
+                    <td class="ta-r">
+                        <strong>@double.Parse(NVD[i].nvTotLinea.ToString()).ToString("N0")</strong>
+                    </td>
+                    <td>
+                        @NVD[i].Stock
+                    </td>
+
+
+                </tr>
+
+            } }
+
+
+    </table>
+</body>
+</html>

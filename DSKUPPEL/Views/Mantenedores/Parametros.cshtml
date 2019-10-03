@@ -1,0 +1,111 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "Parametros";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+    List<ParametrosModels> parametros = ViewBag.Parametros;
+
+}
+
+
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        height: 80%;
+        width: 100%;
+    }
+
+    th, td {
+        border: 3px;
+        text-align: center;
+        padding: 3px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body class="contact-page">
+    <div class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="crumbs">
+                    <ul>
+                        <li><a href='@Url.Action("Index", "Index")'>Inicio</a></li>
+                        <li><a href='@Url.Action("Parametros", "Mantenedores")'>Parametros</a></li>
+                    </ul>
+                </div>
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Parametros</h1>
+
+
+                        <div class="col-full">
+                            <center>
+                                <div class="wrap-col" style="border:5px solid #ddd">
+                                    <br />
+                                    <h4>Reglas de Negocio</h4>
+                                    <br />
+                                    <form name="form1" id="ff" method="post" action="@Url.Action("Parametros", "Mantenedores")">
+                                        <div style="border:5px solid #ddd; margin:4px">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        @*<th>Reglas de Negocio</th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (parametros[0].Aprobador == 0)
+                                                    {
+                                                        <tr>
+                                                            <td>Con Aprobador <input type="radio" id='rbCona' name="gender" value="A"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Sin Aprobador <input type="radio" id='rbSina' name="gender" value="P" checked="checked"></td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td>Con Aprobador <input type="radio" id='rbCona' name="gender" value="A" checked="checked"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Sin Aprobador <input type="radio" id='rbSina' name="gender" value="P"></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <input class="sendButton" type="button" name="enviar" value="Guardar" onclick="envioDatos();">
+                                        <input type="hidden" id="valorRadio" name="valorRadio" value="" />
+                                    </form>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<br>
+<br>
+<br>
+<br>
+
+<script>
+
+    function envioDatos() {
+        var valor = $('input[name=gender]:checked', '#ff').val();
+        $("#valorRadio").val(valor);
+
+        document.getElementById("ff").submit();
+
+
+
+
+        //alert($('input[name=gender]:checked', '#ff').val());
+    }
+</script>

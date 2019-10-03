@@ -1,0 +1,6 @@
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\bin\Release\ET.dll
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\bin\Release\ET.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\obj\Release\ET.csproj.CoreCompileInputs.cache
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\obj\Release\ET.dll
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\obj\Release\ET.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\ET\obj\Release\ET.csprojAssemblyReference.cache

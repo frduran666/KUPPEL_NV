@@ -1,0 +1,67 @@
+﻿@using DSKUPPEL.Models;
+@{
+    ViewBag.Title = "Clientes";
+    List<ClientesModels> listarclientes = ViewBag.clientes;
+    string[] idcliente = new string[listarclientes.Count];
+}
+
+<link href="~/Scripts/css/estilotables.css" rel="stylesheet" />
+
+<body class="contact-page">
+
+    <div id="ModalMap" class="wrap-body">
+        <section id="container">
+            <div class="wrap-container">
+                <div class="crumbs">
+                    <ul>
+                        <li><a href='@Url.Action("Index", "Index")'>Inicio</a></li>
+                        <li><a href='@Url.Action("Clientes", "Mantenedores")'>Clientes</a></li>
+                    </ul>
+                </div>
+                <div class="zerogrid">
+                    <div class="row">
+                        <h1 class="t-center" style="margin: 40px 0;color: #212121;letter-spacing: 2px;font-weight: 500;">Cliente</h1>
+
+                        <div class="col-full">
+                            <div class="table-responsive2">
+                                <div class="wrap-col">
+
+                                    <table id="dataTable" class=" table2" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Direccion</th>
+                                                <th>Contacto</th>
+                                                <th>Telefono</th>
+                                                <th>Editar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                for (int i = 0; i < listarclientes.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>@listarclientes[i].NomAux</td>
+                                                        <td>@listarclientes[i].DirAux</td>
+                                                        <td>@listarclientes[i].NomCon</td>
+                                                        <td>@listarclientes[i].FonCon</td>
+                                                        <td>
+                                                            <a id="iframe" href='@Url.Action("EditCliente", "Mantenedores", new { rutAux = @listarclientes[i].RutAux, codAux = @listarclientes[i].CodAux })'><img src="~/Image/edit.png"></a>
+                                                            @{idcliente[i] = listarclientes[i].CodAux;}
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+
