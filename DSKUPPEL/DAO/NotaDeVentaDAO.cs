@@ -92,7 +92,7 @@ namespace DSKUPPEL.DAO
             catch (Exception ex)
             {
                 string error = ex.ToString();
-                return null;
+                throw ex;
             }
 
         }
@@ -168,6 +168,24 @@ namespace DSKUPPEL.DAO
 
         }
 
+        public static List<NotadeVentaCabeceraModels> BuscarNVNum(NotadeVentaCabeceraModels NVSoft)
+        {
+            try
+            {
+                using (DataContext dc = new DataContext(catalogo, "SP_GET_BuscaNVNumSoft", CommandType.StoredProcedure))
+                {
+                    dc.parameters.AddWithValue("NVNum", NVSoft.NVNumero);
+                    return dc.executeQuery<NotadeVentaCabeceraModels>();
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return null;
+            }
+
+        }
+
         public static List<NotaDeVentaDetalleModels> BuscarNVDETALLEPorNumero(NotadeVentaCabeceraModels NVC)
         {
             try
@@ -176,6 +194,25 @@ namespace DSKUPPEL.DAO
                 {
                     dc.parameters.AddWithValue("intNVNumero", NVC.NVNumero);
                     return dc.executeQuery<NotaDeVentaDetalleModels>();
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return null;
+            }
+
+        }
+
+        public static List<NotadeVentaCabeceraModels> InsertarNvSoftland(NotadeVentaCabeceraModels NVC)
+        {
+            try
+            {
+                using (DataContext dc = new DataContext(catalogo, "insertaNVSoftland", CommandType.StoredProcedure))
+                {
+                    dc.parameters.AddWithValue("nvNumero", NVC.NVNumero);
+
+                    return dc.executeQuery<NotadeVentaCabeceraModels>();
                 }
             }
             catch (Exception ex)

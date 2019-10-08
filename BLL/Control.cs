@@ -16,6 +16,12 @@ namespace BLL
             return _Control.DatosCorreoVend(NvNUmero);
         }
 
+        public List<_NotaDeVentaDetalleModels> DatosCorreoAprobador(string vendCodi)
+        {
+            return _Control.DatosCorreoAprobador(vendCodi);
+        }
+        
+
         public bool ActualizaCorreo(_UsuariosModels Usuario)
         {
             return _Control.ActualizaCorreo(Usuario);

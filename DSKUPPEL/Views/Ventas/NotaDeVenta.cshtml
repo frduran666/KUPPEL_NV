@@ -8,6 +8,7 @@
     }
 
     ViewBag.Title = "NotaDeVenta";
+    //Layout = "~/Views/_Shared/_Layout.cshtml";
     string anterior = ViewBag.Anterior;
     string NomAux = ViewBag.NomAux;
     string CodAux = ViewBag.CodAux;
@@ -38,7 +39,7 @@
 }
 
 
-<link href="~/Scripts/jquery-ui.css" rel="stylesheet" />
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
 <script src="~/WebJs/Funciones.js"></script>
 
 <body class="contact-page">
@@ -139,7 +140,7 @@
                                                             }
                                                             else
                                                             {
-                                                                <input type="text" name="txtcontacto0" id="txtcontacto0" value="Sin Contacto" tabindex="-1" />
+                                                                <input type="text" name="txtcontacto0" id="txtcontacto0" value="" tabindex="-1" />
                                                             }
                                                         }
                                                         catch (Exception)
@@ -261,7 +262,7 @@
                                                     <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcantidad" id="txtcantidad" onkeyup="Multiplicar();" onkeypress="return valida(event)" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 60% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto"  onchange="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
+                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onchange="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
                                                     <td><center><input type="text" class="texto" style=" width: 85% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 50% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
                                                     <td><center><input type="text" class="texto" style=" width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
@@ -368,6 +369,45 @@
 
                             <br>
 
+
+                            <!--
+                            <div class="col-full">
+                                <div style="float:right;">
+                                    <h3><label id="lbtotal">@double.Parse(total1.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                    <input type="hidden" id="txttotal" name="txttotal" value=@total1>
+                                </div>
+                                <div style="float:right;">
+                                    <input type="hidden" id="contador_registros" name="contador_registros" value=@numero1>
+                                    <h3>Sub-Total Neto:&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                </div>
+                                <br />
+
+                            </div>
+                            <div class="col-full">
+                                <div style="float:right;">
+                                    <h3><label id="lbimpuesto">@double.Parse(impuesto.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                    <input type="hidden" id="txtimpuesto" name="txtimpuesto" value=@impuesto>
+                                </div>
+                                <div style="float:right;">
+                                    <h3>Impuesto:&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                </div>
+                                <br />
+
+                            </div>
+                            <div class="col-full">
+                                <div style="float:right;">
+                                    <h3><label id="lbtotalfinal">@double.Parse(totalfinal.ToString()).ToString("N0")&nbsp;&nbsp;&nbsp;&nbsp;</label></h3>
+                                    <input type="hidden" id="txttotalfinal" name="txttotalfinal" value=@totalfinal>
+                                </div>
+                                <div style="float:right;">
+                                    <h3>Total Final:&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                                </div>
+                                <br />
+                                <br />
+                            </div>
+                            -->
+
+
                             <div class="col-full">
                                 <div style="float:right">
                                     <input class="sendButton" id="btnCot" style="cursor: pointer; background-color: #0AAC8E; width: auto; padding: 8px 8px; color: #ffffff;" type="submit" value="Genera Cotización" onclick="agregarnotadeventa();">
@@ -419,9 +459,8 @@
         return false;
         }
 
-    
 
-    function Descuento() {
+     function Descuento() {
         var valor = $('#txtsubtotal').val();
         var porcenta = $('#txtDescuento').val();
 
@@ -456,11 +495,13 @@
         }
     }
 
-    function QuickProductSearch() {
+     var precioProducto = 0;
+
+        function QuickProductSearch() {
         var CodRapido = $('#txtcodrapido').val();
         var CodLista = $('#cbxlista').val();
 
-        var _url = '@System.Configuration.ConfigurationManager.AppSettings["quickProductSearch"]';
+        var _url = "@Url.Action("QuickProductSearch", "Ventas")";
 
         if (CodLista == '00') {
             alert("Debe Seleccionar una Lista de Precio");
@@ -491,6 +532,7 @@
                         $('#txtstock').val(response[0].Stock);
                         $('#txtdescripcion').val(response[0].DesProd);
                         $('#txtcantidad').focus();
+                        precioProducto = $('#txtprecioneto').val();
                     },
                     error: function (response) {
                         alert("Este Producto no se encuentra en esta lista de Precio");
@@ -502,8 +544,6 @@
             }
         }
     }
-
-    var precioProducto = 0;
 
     function ProductSearch() {
         var CodProd = $('#txtdescripcion').val();
@@ -522,8 +562,6 @@
                 $('#txtumedida').val('');
                 $('#txtcantidad').val('');
                 $('#txtstock').val('');
-                $('#txtsubtotal').val('');
-                $('#txtTotalConDes').val('');
             }
             else {
                 $("input#txtdescripcion").autocomplete(
@@ -561,11 +599,12 @@
                         debugger
                         $('#txtcodigoProducto').val(ui.item.value);
                         $('#txtdescripcionProducto').val(ui.item.nompro);
-                        $('#txtprecioneto').val(ui.item.precio);
-                        precioProducto = ui.item.precio;
+                            $('#txtprecioneto').val(ui.item.precio);
+                            precioProducto = ui.item.precio;
                         $('#txtumedida').val(ui.item.umedida);
                         $('#txtstock').val(ui.item.Stock);
                         $(this).val(ui.item.label);
+
                         $('#txtcantidad').focus();
                         return false;
                     }
@@ -575,8 +614,6 @@
         }
     }
 
-    
-        
     function Multiplicar() {
         var punitario = $('#txtprecioneto').val();
         var cantidad = $('#txtcantidad').val();
@@ -656,8 +693,7 @@
         $('#lbtotal').html(Math.round(totalfinal));
     }
 
-
-    function PrecioMod() {
+     function PrecioMod() {
         //var valorNeto = $('#txtprecioneto').val();
         var cantidadTotal = $('#txtcantidad').val();
         var preciounitario = parseInt($('#txtprecioneto').val());
@@ -682,6 +718,19 @@
 }
 
     function addRow() {
+        var txtdetalle = $('#txtdescripcion').val();
+        var contador = $('#contador_registros').val();
+        var image = '<img src="~/Image/delete.png" />';
+        var codigo = $('#txtcodigoProducto').val();
+        var descripcion = $('#txtdescripcionProducto').val();
+        var cantidad = $('#txtcantidad').val();
+        var preciounitario = $('#txtprecioneto').val();
+        var subtotal = $('#txtsubtotal').val();
+        var medida = $('#txtumedida').val();
+        var descuento = $('#txtDescuento').val();
+        var valordescuento = $('#txtTotalConDes').val();
+        var validador = 0;
+
         var txtdetalle = $('#txtdescripcion').val();
         var contador = $('#contador_registros').val();
         var image = '<img src="~/Image/delete.png" />';
@@ -723,13 +772,23 @@
             if (validador == 0) {
                 var subtotal2 = cantidad * preciounitario;
                 var valordescuento2 = Math.round(subtotal2 - ((subtotal2 * descuento) / 100));
+                var precioUniDesc = Math.round(subtotal2 - ((preciounitario * descuento) / 100));
+                var total = valordescuento2;
+                total = Math.round(total);
 
-                if (subtotal2 == subtotal && valordescuento2 == valordescuento) {
+                var precioUniDes = (preciounitario - (preciounitario * descuento) / 100);
+                precioUniDes = Math.round(precioUniDes);
+
+                if (subtotal2 == subtotal && valordescuento2 == parseInt(valordescuento)) {
                     // alert("SUB-TOTAL:" + subtotal2 + " VALOR: " + valordescuento2);
                 }
                 else {
-                    subtotal = (subtotal2).toString();
+                    //subtotal = Math.round((subtotal2 - ((subtotal2 * descuento) / 100))).toString();
                     valordescuento = (valordescuento2).toString();
+                }
+
+                if (descuento > 0) {
+                    subtotal2 = Math.round((subtotal2 - ((subtotal2 * descuento) / 100)));
                 }
 
                 suma(valordescuento);
@@ -739,10 +798,10 @@
                 + '<td><input type="text" name="thdescripcion' + contador + '"     id="thdescripcion' + contador + '"   value="' + descripcion + '" readonly="readonly" ></td>'
                 + '<td><input type="text" name="thcantidad ' + contador + '"       id="thcantidad' + contador + '"      value="' + cantidad + '" readonly="readonly" size="10"></td>'
                 + '<td><input type="text" name="thmedida' + contador + '"          id="thmedida' + contador + '"        value="' + medida + '" readonly="readonly" size="10"></td>'
-                + '<td><input type="text" name="thpreciounitario' + contador + '"  id="thpreciounitario' + contador + '"value="' + preciounitario + '" readonly="readonly" size="10"></td>'
-                    + '<td><input type="text" name="thsubtotal' + contador + '"        id="thsubtotal' + contador + '"      value="' + subtotal + '"readonly="readonly" size="10"></td>'//
+                + '<td><input type="text" name="thpreciounitario' + contador + '"  id="thpreciounitario' + contador + '"value="' + precioUniDes + '" readonly="readonly" size="10"></td>' /*preciounitario*/
+                    + '<td><input type="text" name="thsubtotal' + contador + '"        id="thsubtotal' + contador + '"      value="' + subtotal2 + '"readonly="readonly" size="10"></td>'//
                 + '<td><input type="text" name="thdescuento' + contador + '"       id="thdescuento' + contador + '"     value="' + descuento + '" readonly="readonly" size="10"></td>'
-                    + '<td><input type="text" name="thvalordescuento' + contador + '"  id="thvalordescuento' + contador + '"value="' + valordescuento + '"  size="10" readonly="readonly"></td>'
+                    + '<td><input type="text" name="thvalordescuento' + contador + '"  id="thvalordescuento' + contador + '"value="' + valordescuento2 + '"  size="10" readonly="readonly"></td>'
                 + '<td><a id="thproductolist' + contador + '" href="#divCodigo" onclick="eliminarFilas(this.id);"><img src="../Image/delete.png" /></a></td>'
                 + '</tr>';
 
@@ -891,7 +950,7 @@
                 CodLista: CodLista,
                 nvObser: nvObser,
                 CveCod: CveCod,
-                NomCon: NomCon2,
+                NomCon: NomCon,
                 CodiCC: CodiCC,
                 nvSubTotal: nvSubTotal,
                 nvMonto: nvMonto,
@@ -901,8 +960,7 @@
                 FechaHoraCreacion: FechaHoraCreacion,
                 TotalBoleta: TotalBoleta,
                 id: id,
-                CodLugarDesp: CodLugarDesp,
-                NomCon: NomCon
+                CodLugarDesp: CodLugarDesp
             };
 
             //console.log(data);
@@ -911,16 +969,35 @@
                 var url = $("#NV").val(); location.href = url;
             }
             else {
-                $.post(url, data).done(function (data) {
-                if (data == null) {
-                    alert("Cliente no tiene Correo Asignado");
-                }
-                confirm("Se Genero Cotización" + " " + NVNumero);
-                var url = $("#RedirectTo").val(); location.href = url;
-
-                //Window.location.href = '/Ventas/Misclientes/' + id;
+                $.ajax({
+                url: url,
+                type: "POST",
+                data: data,
+                success: function (result) {
+                confirm("Se Genero Cotizacion" + " " + NVNumero); 
+                    var url1 = $("#RedirectTo").val();
+                    location.href = url1;
+                },
+                error: function (a, b, c) {
+                    console.log(a,b,c);
+                },
+                async: false
             });
             }
+            
+
+            //else {
+            //    $.post(url, data).done(function (data) {
+            //    if (data == null) {
+            //        alert("Cliente no tiene Correo Asignado");
+            //    }
+            //    confirm("Se Genero Cotización" + " " + NVNumero);
+            //    var url1 = $("#RedirectTo").val(); 
+            //        location.href = url1;
+
+            //    //Window.location.href = '/Ventas/Misclientes/' + id;
+            //});
+            //}
 
         }
     }

@@ -13,6 +13,8 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Globalization;
 using BLL;
+using DS_NotaVenta.Util.Archivo;
+using System.Web.Script.Serialization;
 
 namespace DSKUPPEL.Controllers
 {
@@ -22,7 +24,7 @@ namespace DSKUPPEL.Controllers
         {
             List<NotadeVentaCabeceraModels> doc = new List<NotadeVentaCabeceraModels>();
             var docPendientes = ReporteDAO.listarDocPendientes();
-
+            //var vendCodi = Session["VenCod"].ToString().Trim();
             if (docPendientes != null)
             {
                 doc = docPendientes;
@@ -54,14 +56,15 @@ namespace DSKUPPEL.Controllers
             Control Acceso = new Control();
             var de = "";
             var clavecorreo = "";
-            IEnumerable<_NotaDeVentaDetalleModels> datosUser = Acceso.DatosCorreoVend(nvnumero);
-            foreach (_NotaDeVentaDetalleModels ot in datosUser)
+            var vendCodi = Session["VenCod"].ToString().Trim();
+
+            IEnumerable<_NotaDeVentaDetalleModels> datosAprobador = Acceso.DatosCorreoAprobador(vendCodi);
+            foreach (_NotaDeVentaDetalleModels ot in datosAprobador)
             {
                 de = ot.EmailVend;
                 clavecorreo = ot.PassCorreo;
             }
-
-
+            
             string to = System.Configuration.ConfigurationManager.AppSettings.Get("Para");
             string from = de;
             string displayName = System.Configuration.ConfigurationManager.AppSettings.Get("Remitente");
@@ -86,7 +89,7 @@ namespace DSKUPPEL.Controllers
             };
 
 
-            MailMessage mailWithImg = GetMailWithImg(nvnumero);
+            MailMessage mailWithImg = GetMailWithImg(nvnumero, vendCodi);
             if (mailWithImg != null)
             {
                 smtp.Send(mailWithImg);
@@ -94,17 +97,20 @@ namespace DSKUPPEL.Controllers
             }
         }
 
-        private MailMessage GetMailWithImg(int nvnumero)
+        private MailMessage GetMailWithImg(int nvnumero, string vendCodi)
         {
             Control Acceso = new Control();
             var de = "";
             var clavecorreo = "";
-            IEnumerable<_NotaDeVentaDetalleModels> datosUser = Acceso.DatosCorreoVend(nvnumero);
-            foreach (_NotaDeVentaDetalleModels ot in datosUser)
+            //Correo aprobador
+            //var vendCodi = Session["VendCod"].ToString();
+            IEnumerable<_NotaDeVentaDetalleModels> datosAprobador = Acceso.DatosCorreoAprobador(vendCodi);
+            foreach (_NotaDeVentaDetalleModels ot in datosAprobador)
             {
                 de = ot.EmailVend;
                 clavecorreo = ot.PassCorreo;
             }
+
             string from = de;
             string subject = string.Format("Aprobación de Cotización {0}", nvnumero);
 
@@ -115,6 +121,8 @@ namespace DSKUPPEL.Controllers
             List<NotadeVentaCabeceraModels> NVentaCabeceras = NotaDeVentaDAO.BuscarNVPorNumero(NVentaCabecera);
 
             List<NotaDeVentaDetalleModels> NVentaDetalles = NotaDeVentaDAO.BuscarNVDETALLEPorNumero(NVentaCabecera);
+
+            List<NotadeVentaCabeceraModels> NVsoft = NotaDeVentaDAO.BuscarNVNum(NVentaCabecera);
 
             ClientesModels Vendedor = new ClientesModels
             {
@@ -128,7 +136,7 @@ namespace DSKUPPEL.Controllers
                 IsBodyHtml = true
             };
 
-            mail.AlternateViews.Add(GetEmbeddedImage(NVentaCabeceras, NVentaDetalles, vendedores));
+            mail.AlternateViews.Add(GetEmbeddedImage(NVentaCabeceras, NVentaDetalles, vendedores,NVsoft));
             mail.From = new MailAddress(from);
 
             if (vendedores != null)
@@ -144,15 +152,16 @@ namespace DSKUPPEL.Controllers
         }
 
         private AlternateView GetEmbeddedImage(List<NotadeVentaCabeceraModels> NVentaCabeceras,
-        List<NotaDeVentaDetalleModels> NVentaDetalles, List<ClientesModels> Clientes)
+        List<NotaDeVentaDetalleModels> NVentaDetalles, List<ClientesModels> Clientes, List<NotadeVentaCabeceraModels> NVSoft)
         {
             char[] blanco = { ' ' };
 
             string htmlBody = String.Format(
             "<html><body>" +
             "<img src='~/Image/logo.png' />" +
-            "<H1> COTIZACIÓN </H1>" +
+            "<H1> APROBACION COTIZACIÓN </H1>" +
             @"<H4> Nº de Cotización: " + NVentaCabeceras[0].NVNumero + @" </H4>" +
+            @"<H4> Nº Nota de Venta Softland: " + NVSoft[0].NVNumero + @" </H4>" +
             @"<H4> Fecha Pedido: " + NVentaCabeceras[0].nvFem.ToShortDateString() + @" </H4>" +
             @"<H4> Cliente: " + NVentaCabeceras[0].NomAux + @" </H4>" +
             @"<H4> Dirección: " + Clientes[0].DirAux + @" </H4>" +
@@ -173,24 +182,31 @@ namespace DSKUPPEL.Controllers
 
             ProductosModels producto = new ProductosModels();
             List<LinkedResource> resources = new List<LinkedResource>();
+            double Iva = 0;
+            double subtotal = 0;
+            double ivaux = 0;
             foreach (NotaDeVentaDetalleModels nvd in NVentaDetalles)
             {
                 double precioConIVa = Math.Round(nvd.nvSubTotal * 1.19);
-                double Iva = (precioConIVa - nvd.nvSubTotal);
+                subtotal = subtotal + nvd.nvSubTotal;
+                Iva = (precioConIVa - nvd.nvSubTotal);
+                ivaux = ivaux + Iva;
                 producto.CodProd = nvd.CodProd;
                 htmlBody += @"<tr>" +
                            @"<td>" + nvd.nvLinea + @"</td>" +
                            @"<td>" + nvd.CodProd + @"</td>" +
                            @"<td>" + nvd.DesProd + @"</td>" +
-                           @"<td>" + nvd.nvCant + @"</td>" +
-                           @"<td>" + nvd.nvPrecio + @"</td>" +
-                           @"<td>" + nvd.nvSubTotal + @"</td>" +
-                           @"<td>" + Iva + @"</td>" +
-                           @"<td>" + precioConIVa + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvCant + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvPrecio + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvSubTotal + @"</td>" +
+                           @"<td style='text-align: right;'>" + Iva + @"</td>" +
+                           @"<td style='text-align: right;'>" + precioConIVa + @"</td>" +
                            @"</tr>";
             }
-            htmlBody += @"<tr><th colspan =" + 7 + @">Total</th><td>" + NVentaCabeceras[0].TotalBoleta + @"</td></tr>";
-            htmlBody += @"</body></html>";
+            htmlBody += @"<tr><th style='text-align: right;' colspan =" + 7 + @">Sub Total</th><td style='text-align: right;'>" + subtotal  + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total Iva</th><td style='text-align: right;'>" + ivaux + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total</th><td style='text-align: right;'>" + NVentaCabeceras[0].TotalBoleta + @"</td></tr>";
+            htmlBody += @" </body></html>";
 
             AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
             foreach (LinkedResource r in resources)

@@ -13,6 +13,8 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Globalization;
 using BLL;
+using DS_NotaVenta.Util.Archivo;
+using System.Web.Script.Serialization;
 
 namespace DSKUPPEL.Controllers
 {
@@ -74,7 +76,7 @@ namespace DSKUPPEL.Controllers
 
         public ActionResult NotaDeVenta(string CodAux, string NomAux, string anterior)
         {
-            var id_ = Session["ID"].ToString(); ;
+            var id_ = Session["ID"].ToString();
             var VenCod = Session["VenCod"].ToString();
             var id = id_; 
 
@@ -259,6 +261,7 @@ namespace DSKUPPEL.Controllers
         [NonAction]
         public void VerificationEmail(int nvnumero, string NomCon)
         {
+
             Control Acceso = new Control();
             var de = "";
             var clavecorreo = "";
@@ -293,13 +296,14 @@ namespace DSKUPPEL.Controllers
                 Credentials = new NetworkCredential(fromEmail.Address, password)
             };
 
+            var mailWithImg = GetMailWithImg(nvnumero,NomCon);
 
-            MailMessage mailWithImg = GetMailWithImg(nvnumero,NomCon);
             if (mailWithImg != null)
             {
                 smtp.Send(mailWithImg);
                 //smtp.SendAsync(mailWithImg, mailWithImg);
             }
+            
         }
 
         private MailMessage GetMailWithImg(int nvnumero,string NomCon)
@@ -314,7 +318,7 @@ namespace DSKUPPEL.Controllers
                 clavecorreo = ot.PassCorreo;
             }
             string from = de;
-            string subject = string.Format("Cotización {0}", nvnumero);
+            string subject = string.Format("Cotizacion {0}", nvnumero);
 
             NotadeVentaCabeceraModels NVentaCabecera = new NotadeVentaCabeceraModels
             {
@@ -331,8 +335,9 @@ namespace DSKUPPEL.Controllers
             };
 
             List<ClientesModels> contacto = ClientesDAO.GetContacto(cliente);
+
             List<ClientesModels> clientes = ClientesDAO.GetClientes(cliente);
-                       
+
             ClientesModels Vendedor = new ClientesModels
             {
                 VenCod = NVentaCabeceras[0].VenCod
@@ -352,9 +357,9 @@ namespace DSKUPPEL.Controllers
             {
                 mail.To.Add(vendedores[0].EMail);
 
-                if (contacto[0].EMail == "" || contacto[0].EMail == null)
+                if (contacto[0].EMail == null || contacto[0].EMail.Trim() == "")
                 {
-                   mail.To.Add(clientes[0].EMail);
+                    mail.To.Add(clientes[0].EMail);
                 }
                 else
                 {
@@ -536,94 +541,199 @@ namespace DSKUPPEL.Controllers
 
 
         #region"--- Web Métodos ---"
+        //[HttpPost, ValidateInput(false)]
+        //public JsonResult AgregarNV(FormCollection frm, int NVNumero, DateTime nvFem, DateTime nvFeEnt, string CodAux, string VenCod,
+        //string CodLista, string nvObser, string CveCod, string NomCon, string CodiCC, double nvSubTotal, double nvMonto,
+        //double nvNetoAfecto, string Usuario, string UsuarioGeneraDocto, DateTime FechaHoraCreacion, double TotalBoleta,
+        //string id, string CodLugarDesp)
+        //{
+        //    int numSoft = 0;
+        //    try
+        //    {
+        //        #region"NVC"
+        //        NotadeVentaCabeceraModels NVC = new NotadeVentaCabeceraModels
+        //        {
+        //            NVNumero = NVNumero,
+        //            nvFem = nvFem,
+        //            nvEstado = "A",
+        //            nvEstFact = 0,
+        //            nvEstDesp = 0,
+        //            nvEstRese = 0,
+        //            nvEstConc = 0,
+        //            nvFeEnt = nvFeEnt,
+        //            CodAux = CodAux,
+        //            VenCod = VenCod,
+        //            CodMon = "01",
+        //            CodLista = CodLista,
+        //            nvObser = nvObser,
+        //            CveCod = CveCod,
+        //            NomCon = NomCon,
+        //            CodiCC = CodiCC,
+        //            nvSubTotal = nvSubTotal,
+        //            nvPorcDesc01 = 0,
+        //            nvDescto01 = 0,
+        //            nvPorcDesc02 = 0,
+        //            nvDescto02 = 0,
+        //            nvPorcDesc03 = 0,
+        //            nvDescto03 = 0,
+        //            nvPorcDesc04 = 0,
+        //            nvDescto04 = 0,
+        //            nvPorcDesc05 = 0,
+        //            nvDescto05 = 0,
+        //            nvMonto = nvMonto,
+        //            NumGuiaRes = 0,
+        //            nvPorcFlete = 0,
+        //            nvValflete = 0,
+        //            nvPorcEmb = 0,
+        //            nvEquiv = 1,
+        //            nvNetoExento = 0,
+        //            nvNetoAfecto = nvNetoAfecto,
+        //            nvTotalDesc = 0,
+        //            ConcAuto = "N",
+        //            CheckeoPorAlarmaVtas = "N",
+        //            EnMantencion = 0,
+        //            Usuario = Usuario,
+        //            UsuarioGeneraDocto = UsuarioGeneraDocto,
+        //            FechaHoraCreacion = FechaHoraCreacion,
+        //            Sistema = "NW",
+        //            ConcManual = "N",
+        //            proceso = "Notas de Venta",
+        //            TotalBoleta = TotalBoleta,
+        //            NumReq = 0,
+        //            CodVenWeb = "5",
+        //            CodLugarDesp = CodLugarDesp
+        //        };
+        //        #endregion
+
+        //        List<ParametrosModels> para = ParametrosDAO.BuscarParametros();
+
+        //        if (para[0].Aprobador == 1)
+        //        {
+        //            NVC.EstadoNP = "P";
+        //        }
+        //        else
+        //        {
+        //            NVC.EstadoNP = "A";
+        //        }
+
+        //        if (para[0].Aprobador == 1)
+        //        {
+        //            List<NotadeVentaCabeceraModels> NVSoft = NotaDeVentaDAO.EditarNV(NVC);
+        //            ViewBag.NVnum = NVC.NVNumero;
+        //            numSoft = NVC.NVNumero;
+        //        }
+        //        else
+        //        {
+        //            List<NotadeVentaCabeceraModels> NVSoft = NotaDeVentaDAO.InsertarNvSoftland(NVC);
+        //            ViewBag.NVnum = NVSoft[0].NVNumero;
+        //            numSoft = NVSoft[0].NVNumero;
+        //        }
+
+
+        //        //EMail
+        //        VerificationEmail(NVNumero,NomCon);
+        //        //return Json(NV);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw(ex);
+        //    }
+
+        //    return Json(new { ID = id, NVNUM = numSoft });
+
+        //}
+
         [HttpPost, ValidateInput(false)]
-        public ActionResult AgregarNV(FormCollection frm, int NVNumero, DateTime nvFem, DateTime nvFeEnt, string CodAux, string VenCod,
+        public JsonResult AgregarNV(FormCollection frm, int NVNumero, DateTime nvFem, DateTime nvFeEnt, string CodAux, string VenCod,
         string CodLista, string nvObser, string CveCod, string NomCon, string CodiCC, double nvSubTotal, double nvMonto,
         double nvNetoAfecto, string Usuario, string UsuarioGeneraDocto, DateTime FechaHoraCreacion, double TotalBoleta,
         string id, string CodLugarDesp)
         {
             #region"NVC"
-            NotadeVentaCabeceraModels NVC = new NotadeVentaCabeceraModels
+            try
             {
-                NVNumero = NVNumero,
-                nvFem = nvFem,
-                nvEstado = "P",
-                nvEstFact = 0,
-                nvEstDesp = 0,
-                nvEstRese = 0,
-                nvEstConc = 0,
-                nvFeEnt = nvFeEnt,
-                CodAux = CodAux,
-                VenCod = VenCod,
-                CodMon = "01",
-                CodLista = CodLista,
-                nvObser = nvObser,
-                CveCod = CveCod,
-                NomCon = NomCon,
-                CodiCC = CodiCC,
-                nvSubTotal = nvSubTotal,
-                nvPorcDesc01 = 0,
-                nvDescto01 = 0,
-                nvPorcDesc02 = 0,
-                nvDescto02 = 0,
-                nvPorcDesc03 = 0,
-                nvDescto03 = 0,
-                nvPorcDesc04 = 0,
-                nvDescto04 = 0,
-                nvPorcDesc05 = 0,
-                nvDescto05 = 0,
-                nvMonto = nvMonto,
-                NumGuiaRes = 0,
-                nvPorcFlete = 0,
-                nvValflete = 0,
-                nvPorcEmb = 0,
-                nvEquiv = 1,
-                nvNetoExento = 0,
-                nvNetoAfecto = nvNetoAfecto,
-                nvTotalDesc = 0,
-                ConcAuto = "N",
-                CheckeoPorAlarmaVtas = "N",
-                EnMantencion = 0,
-                Usuario = Usuario,
-                UsuarioGeneraDocto = UsuarioGeneraDocto,
-                FechaHoraCreacion = FechaHoraCreacion,
-                Sistema = "NW",
-                ConcManual = "N",
-                proceso = "Notas de Venta",
-                TotalBoleta = TotalBoleta,
-                NumReq = 0,
-                CodVenWeb = "5",
-                CodLugarDesp = CodLugarDesp
-            };
-            #endregion
+                NotadeVentaCabeceraModels NVC = new NotadeVentaCabeceraModels
+                {
+                    NVNumero = NVNumero,
+                    nvFem = nvFem,
+                    nvEstado = "P",
+                    nvEstFact = 0,
+                    nvEstDesp = 0,
+                    nvEstRese = 0,
+                    nvEstConc = 0,
+                    nvFeEnt = nvFeEnt,
+                    CodAux = CodAux,
+                    VenCod = VenCod,
+                    CodMon = "01",
+                    CodLista = CodLista,
+                    nvObser = nvObser,
+                    CveCod = CveCod,
+                    NomCon = NomCon,
+                    CodiCC = CodiCC,
+                    nvSubTotal = nvSubTotal,
+                    nvPorcDesc01 = 0,
+                    nvDescto01 = 0,
+                    nvPorcDesc02 = 0,
+                    nvDescto02 = 0,
+                    nvPorcDesc03 = 0,
+                    nvDescto03 = 0,
+                    nvPorcDesc04 = 0,
+                    nvDescto04 = 0,
+                    nvPorcDesc05 = 0,
+                    nvDescto05 = 0,
+                    nvMonto = nvMonto,
+                    NumGuiaRes = 0,
+                    nvPorcFlete = 0,
+                    nvValflete = 0,
+                    nvPorcEmb = 0,
+                    nvEquiv = 1,
+                    nvNetoExento = 0,
+                    nvNetoAfecto = nvNetoAfecto,
+                    nvTotalDesc = 0,
+                    ConcAuto = "N",
+                    CheckeoPorAlarmaVtas = "N",
+                    EnMantencion = 0,
+                    Usuario = Usuario,
+                    UsuarioGeneraDocto = UsuarioGeneraDocto,
+                    FechaHoraCreacion = FechaHoraCreacion,
+                    Sistema = "NW",
+                    ConcManual = "N",
+                    proceso = "Notas de Venta",
+                    TotalBoleta = TotalBoleta,
+                    NumReq = 0,
+                    CodVenWeb = "5",
+                    CodLugarDesp = CodLugarDesp
+                };
+                #endregion
 
-            List<ParametrosModels> para = ParametrosDAO.BuscarParametros();
+                List<ParametrosModels> para = ParametrosDAO.BuscarParametros();
 
-            if (para[0].Aprobador == 1)
-            {
-                NVC.EstadoNP = "P";
+                if (para[0].Aprobador == 1)
+                {
+                    NVC.EstadoNP = "P";
+                }
+                else
+                {
+                    NVC.EstadoNP = "P";
+                }
+
+                if (para[0].Aprobador == 1)
+                {
+                    List<NotadeVentaCabeceraModels> NV = NotaDeVentaDAO.EditarNV(NVC);
+                }
+                else
+                {
+
+                }
+                //EMail
+                VerificationEmail(NVNumero, NomCon);
+                return Json(new { ID = id });
             }
-            else
+            catch (Exception ex)
             {
-                NVC.EstadoNP = "P";
+                throw(ex);
             }
-
-
-            List<NotadeVentaCabeceraModels> NV = NotaDeVentaDAO.EditarNV(NVC);
-
-
-            if (para[0].Aprobador == 1)
-            {
-                // no insertar en softlad
-            }
-            else
-            {
-                //si insertar en softlad
-            }
-            //EMail
-            VerificationEmail(NVNumero,NomCon);
-            //return Json(NV);
-            return RedirectToAction("Misclientes", "Ventas", new { ID = id });
+            //return RedirectToAction("Misclientes", "Ventas", new { ID = id });
 
         }
 
@@ -673,6 +783,7 @@ namespace DSKUPPEL.Controllers
             double Decimal = c / 100;
             double t = u * Decimal;
             double total = u - t;
+            total = Math.Round(total);
 
             return Json(total.ToString());
         }
