@@ -112,7 +112,7 @@ namespace DSKUPPEL.Controllers
             }
 
             string from = de;
-            string subject = string.Format("Aprobación de Cotización {0}", nvnumero);
+            string subject = string.Format("Comercial Kuppel Spa - Aprobación de Cotización {0}", nvnumero);
 
             NotadeVentaCabeceraModels NVentaCabecera = new NotadeVentaCabeceraModels
             {
@@ -159,9 +159,9 @@ namespace DSKUPPEL.Controllers
             string htmlBody = String.Format(
             "<html><body>" +
             "<img src='~/Image/logo.png' />" +
-            "<H1> APROBACION COTIZACIÓN </H1>" +
+            "<H1> APROBACIÓN COTIZACIÓN </H1>" +
             @"<H4> Nº de Cotización: " + NVentaCabeceras[0].NVNumero + @" </H4>" +
-            @"<H4> Nº Nota de Venta Softland: " + NVSoft[0].NVNumero + @" </H4>" +
+            //@"<H4> Nº Nota de Venta Softland: " + NVSoft[0].NVNumero + @" </H4>" +
             @"<H4> Fecha Pedido: " + NVentaCabeceras[0].nvFem.ToShortDateString() + @" </H4>" +
             @"<H4> Cliente: " + NVentaCabeceras[0].NomAux + @" </H4>" +
             @"<H4> Dirección: " + Clientes[0].DirAux + @" </H4>" +
@@ -171,8 +171,8 @@ namespace DSKUPPEL.Controllers
             @"<table border = ""1"" >" +
             @"<tr>" +
             @"<td>ID</td>" +
-            @"<th nowrap=""nowrap"">Codigo Producto</th>" +
-            @"<th>Descripcion</th>" +
+            @"<th nowrap=""nowrap"">Código Producto</th>" +
+            @"<th>Descripción</th>" +
             @"<th>Cantidad</th>" +
             @"<th>Precio</th>" +
             @"<th>Sub-Total</th>" +
@@ -197,15 +197,15 @@ namespace DSKUPPEL.Controllers
                            @"<td>" + nvd.CodProd + @"</td>" +
                            @"<td>" + nvd.DesProd + @"</td>" +
                            @"<td style='text-align: right;'>" + nvd.nvCant + @"</td>" +
-                           @"<td style='text-align: right;'>" + nvd.nvPrecio + @"</td>" +
-                           @"<td style='text-align: right;'>" + nvd.nvSubTotal + @"</td>" +
-                           @"<td style='text-align: right;'>" + Iva + @"</td>" +
-                           @"<td style='text-align: right;'>" + precioConIVa + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvPrecio.ToString("N0") + @"</td>" +
+                           @"<td style='text-align: right;'>" + nvd.nvSubTotal.ToString("N0") + @"</td>" +
+                           @"<td style='text-align: right;'>" + Iva.ToString("N0") + @"</td>" +
+                           @"<td style='text-align: right;'>" + precioConIVa.ToString("N0") + @"</td>" +
                            @"</tr>";
             }
-            htmlBody += @"<tr><th style='text-align: right;' colspan =" + 7 + @">Sub Total</th><td style='text-align: right;'>" + subtotal  + @"</td></tr>" +
-                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total Iva</th><td style='text-align: right;'>" + ivaux + @"</td></tr>" +
-                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total</th><td style='text-align: right;'>" + NVentaCabeceras[0].TotalBoleta + @"</td></tr>";
+            htmlBody += @"<tr><th style='text-align: right;' colspan =" + 7 + @">Sub Total</th><td style='text-align: right;'>" + "$ "+subtotal.ToString("N0") + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total Iva</th><td style='text-align: right;'>" + "$ "+ivaux.ToString("N0") + @"</td></tr>" +
+                        @"<tr><th style='text-align: right;' colspan =" + 7 + @">Total</th><td style='text-align: right;'>" + "$ "+NVentaCabeceras[0].TotalBoleta.ToString("N0") + @"</td></tr>";
             htmlBody += @" </body></html>";
 
             AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);

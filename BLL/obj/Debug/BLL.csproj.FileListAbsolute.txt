@@ -7,7 +7,6 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\bin\Debug\DAL.pdb
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\bin\Debug\ET.pdb
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\bin\Debug\log4net.xml
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csprojAssemblyReference.cache
-C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csproj.CopyComplete
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.pdb

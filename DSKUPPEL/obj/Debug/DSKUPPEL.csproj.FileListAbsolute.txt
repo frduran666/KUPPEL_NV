@@ -65,7 +65,6 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\bin\es\System.Web.WebPages
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\bin\es\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\bin\es\System.Web.WebPages.Razor.resources.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Debug\DSKUPPEL.csprojAssemblyReference.cache
-C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Debug\DSKUPPEL.csproj.CoreCompileInputs.cache
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Debug\DSKUPPEL.csproj.CopyComplete
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Debug\DSKUPPEL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Debug\DSKUPPEL.pdb

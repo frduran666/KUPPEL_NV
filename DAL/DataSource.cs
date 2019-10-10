@@ -9,8 +9,8 @@ namespace DAL
 {
     public class DataSource
     {
-        public static string coneccionPrimaria = (ConfigurationManager.ConnectionStrings["DSAbutex"].ConnectionString);
-        //public static string coneccionPrimaria = (ConfigurationManager.ConnectionStrings["KuppelBD"].ConnectionString);
+        //public static string coneccionPrimaria = (ConfigurationManager.ConnectionStrings["DSAbutex"].ConnectionString);
+        public static string coneccionPrimaria = (ConfigurationManager.ConnectionStrings["KuppelBD"].ConnectionString);
         public static bool cache;
 
         public static void SetParametros(string conn1)
