@@ -16,25 +16,25 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/BLL.dll">
-      <publishTime>10/09/2019 18:17:30</publishTime>
+      <publishTime>10/11/2019 13:43:27</publishTime>
     </File>
     <File Include="bin/BLL.pdb">
-      <publishTime>10/09/2019 18:17:30</publishTime>
+      <publishTime>10/11/2019 13:43:27</publishTime>
     </File>
     <File Include="bin/cl.riobaker.DAL.dll">
       <publishTime>12/08/2016 23:18:32</publishTime>
     </File>
     <File Include="bin/DAL.dll">
-      <publishTime>10/09/2019 18:17:30</publishTime>
+      <publishTime>10/11/2019 13:43:26</publishTime>
     </File>
     <File Include="bin/DAL.pdb">
-      <publishTime>10/09/2019 18:17:30</publishTime>
+      <publishTime>10/11/2019 13:43:26</publishTime>
     </File>
     <File Include="bin/DSKUPPEL.dll">
-      <publishTime>10/09/2019 18:36:51</publishTime>
+      <publishTime>10/11/2019 13:43:27</publishTime>
     </File>
     <File Include="bin/DSKUPPEL.pdb">
-      <publishTime>10/09/2019 18:36:51</publishTime>
+      <publishTime>10/11/2019 13:43:27</publishTime>
     </File>
     <File Include="bin/es/System.Web.Helpers.resources.dll">
       <publishTime>11/28/2018 13:04:36</publishTime>
@@ -1564,7 +1564,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>10/09/2019 16:26:03</publishTime>
     </File>
     <File Include="Views/Ventas/NotaDeVenta.cshtml">
-      <publishTime>10/09/2019 18:15:22</publishTime>
+      <publishTime>10/11/2019 13:37:59</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>09/26/2019 17:40:34</publishTime>
@@ -1573,7 +1573,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>09/26/2019 17:40:34</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/09/2019 18:17:31</publishTime>
+      <publishTime>10/11/2019 13:43:27</publishTime>
     </File>
     <File Include="WebJs/Funciones.js">
       <publishTime>10/07/2019 13:34:49</publishTime>

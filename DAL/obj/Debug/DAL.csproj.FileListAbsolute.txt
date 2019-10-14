@@ -5,4 +5,3 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\bin\Debug\log4net.xml
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Debug\DAL.csproj.CopyComplete
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Debug\DAL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Debug\DAL.pdb
-C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Debug\DAL.csprojAssemblyReference.cache

@@ -260,12 +260,12 @@
                                                         </center>
                                                     </td>
                                                     <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtcantidad" id="txtcantidad" onkeyup="Multiplicar();" onkeypress="return valida(event)" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 80% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onchange="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
-                                                    <td><center><input type="text" class="texto" style=" width: 85% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 80% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
-                                                    <td><center><input type="text" class="texto" style=" width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" text-align: right; width: 90% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtstock" id="txtstock" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" width: 60% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtumedida" id="txtumedida" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" text-align: right; width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtprecioneto" id="txtprecioneto" onchange="PrecioMod();" onkeypress="return validaNumericos(event)" /></center></td><!--readonly="readonly"-->
+                                                    <td><center><input type="text" class="texto" style=" text-align: right; width: 100% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtsubtotal" id="txtsubtotal" readonly="readonly" /></center></td>
+                                                    <td><center><input type="text" class="texto" style=" text-align: right; width: 80% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtDescuento" id="txtDescuento" onkeyup="Descuento();" value="0" onkeypress="return NumCheck(event, this)" /> <!----><!--"return valida(event)"--> </center></td>
+                                                    <td><center><input type="text" class="texto" style=" text-align: right; width: 94% !important; padding: 8px 8px; margin: 2px 0;box-sizing: border-box;" name="txtTotalConDes" id="txtTotalConDes" readonly="readonly" /></center></td>
                                                     <td><input class="sendButton" style="cursor: pointer; background-color: #0AAC8E; width: auto; padding: 8px 8px; color: #ffffff;" type="submit" name="Agregar" value="(+)" onclick="addRow();"></td>
                                                 </tr>
                                             </tbody>
@@ -808,16 +808,16 @@
                 suma(valordescuento);
                 var texto_insertar =
                 '<tr class="thproductolist' + contador + '">' +
-                 '<td><input type="text" name="thcodigo' + contador + '"           id="thcodigo' + contador + '"        value="' + codigo + '" readonly="readonly" size="11"></td>'
+                 '<td><input style="text-align: right;" type="text" name="thcodigo' + contador + '"           id="thcodigo' + contador + '"        value="' + codigo + '" readonly="readonly" size="11"></td>'
                 + '<td><input type="text"  name="thdescripcion' + contador + '"     id="thdescripcion' + contador + '"   value="' + descripcion + '" readonly="readonly" size="45" ></td>'
-                + '<td><input type="text" name="thcantidad ' + contador + '"       id="thcantidad' + contador + '"      value="' + cantidad + '" readonly="readonly" size="5"></td>'
-                    + '<td><input type="text" name="thmedida' + contador + '"          id="thmedida' + contador + '"        value="' + medida + '" readonly="readonly" size="10"></td>'
-                    + '<td><input type="text" name="precioNeto' + contador + '"          id="precioNeto' + contador + '"        value="' + precioProducto + '" readonly="readonly" size="10"></td>'
-                    + '<td><input type="text" name="thpreciounitario' + contador + '"  id="thpreciounitario' + contador + '"value="' + precioUniDes + '" readonly="readonly" size="10"></td>' /*preciounitario*/
+                + '<td><input style="text-align: right;" type="text" name="thcantidad ' + contador + '"       id="thcantidad' + contador + '"      value="' + cantidad + '" readonly="readonly" size="5"></td>'
+                    + '<td><input style="text-align: center;" type="text" name="thmedida' + contador + '"          id="thmedida' + contador + '"        value="' + medida + '" readonly="readonly" size="10"></td>'
+                    + '<td><input style="text-align: right;" type="text" name="precioNeto' + contador + '"          id="precioNeto' + contador + '"        value="' + precioProducto + '" readonly="readonly" size="10"></td>'
+                    + '<td><input style="text-align: right;" type="text" name="thpreciounitario' + contador + '"  id="thpreciounitario' + contador + '"value="' + precioUniDes + '" readonly="readonly" size="10"></td>' /*preciounitario*/
                     
-                    + '<td><input type="text" name="thsubtotal' + contador + '"        id="thsubtotal' + contador + '"      value="' + subtotal2 + '"readonly="readonly" size="10"></td>'//
-                + '<td><input type="text" name="thdescuento' + contador + '"       id="thdescuento' + contador + '"     value="' + descuento + '" readonly="readonly" size="10"></td>'
-                    + '<td><input type="text" name="thvalordescuento' + contador + '"  id="thvalordescuento' + contador + '"value="' + valordescuento2 + '"  size="10" readonly="readonly"></td>'
+                    + '<td><input style="text-align: right;" type="text" name="thsubtotal' + contador + '"        id="thsubtotal' + contador + '"      value="' + subtotal2 + '"readonly="readonly" size="10"></td>'//
+                + '<td><input style="text-align: right;" type="text" name="thdescuento' + contador + '"       id="thdescuento' + contador + '"     value="' + descuento + '" readonly="readonly" size="10"></td>'
+                    + '<td><input style="text-align: right;" type="text" name="thvalordescuento' + contador + '"  id="thvalordescuento' + contador + '"value="' + valordescuento2 + '"  size="10" readonly="readonly"></td>'
                 + '<td><a id="thproductolist' + contador + '" href="#divCodigo" onclick="eliminarFilas(this.id);"><img src="../Image/delete.png" /></a></td>'
                 + '</tr>';
 
