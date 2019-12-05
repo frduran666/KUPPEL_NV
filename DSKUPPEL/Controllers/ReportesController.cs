@@ -22,9 +22,26 @@ namespace DSKUPPEL.Controllers
     {
         public ActionResult FacturasPendientes()
         {
+            if (Session["VenCod"] == null)
+            {
+                return RedirectToAction("SesionExpirada", "Error");
+            }
+            var vendCodi = Session["ID"].ToString().Trim();
+            UsuariosModels usr6 = new UsuariosModels();
+            usr6.id = int.Parse(vendCodi);
+            List<UsuariosModels> CorreoUsuario = new List<UsuariosModels>();
+
+            CorreoUsuario = UsuariosDAO.ValidaCorreo(usr6);
+
+            if (CorreoUsuario[0].email == null || CorreoUsuario[0].email == "")
+            {
+                TempData["Mensaje"] = "<div class='alert alert-warning alert - dismissable'>" + "<strong>Usuario no tiene correo configurado</strong></div>";
+                return RedirectToAction("Index", "Index");
+            }
+
+
             List<NotadeVentaCabeceraModels> doc = new List<NotadeVentaCabeceraModels>();
             var docPendientes = ReporteDAO.listarDocPendientes();
-            //var vendCodi = Session["VenCod"].ToString().Trim();
             if (docPendientes != null)
             {
                 doc = docPendientes;

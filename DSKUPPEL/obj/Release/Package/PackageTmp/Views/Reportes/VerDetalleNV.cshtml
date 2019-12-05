@@ -280,15 +280,15 @@
                 </tbody>
                 <tbody>
                     <tr>
-                        <td class="ta-r" colspan="8" align="right"><strong>Sub-Total</strong></td>
+                        <td class="ta-r" colspan="9" align="right"><strong>Sub-Total</strong></td>
                         <td class="ta-r"><strong>@double.Parse(cabecera[0].nvSubTotal.ToString()).ToString("N0")</strong></td>
                     </tr>
                     <tr>
-                        <td class="ta-r" colspan="8" style="{text-align: right !important}"><strong>Impuesto</strong></td>
+                        <td class="ta-r" colspan="9" style="{text-align: right !important}"><strong>Impuesto</strong></td>
                         <td class="ta-r"><strong>@double.Parse((cabecera[0].TotalBoleta - cabecera[0].nvSubTotal).ToString()).ToString("N0")</strong></td>
                     </tr>
                     <tr>
-                        <td class="ta-r" colspan="8" align="right"><strong>Total Final</strong></td>
+                        <td class="ta-r" colspan="9" align="right"><strong>Total Final</strong></td>
                         <td class="ta-r"><strong>@double.Parse(cabecera[0].TotalBoleta.ToString()).ToString("N0")</strong></td>
                     </tr>
                 </tbody>

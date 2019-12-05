@@ -28,6 +28,23 @@ namespace DSKUPPEL.DAO
             }
         }
 
+        public static List<ClientesModels> GetInfoContacto(ClientesModels cliente = null)
+        {
+            try
+            {
+                using (DataContext dc = new DataContext(catalogo, "JS_ListarContacto", CommandType.StoredProcedure))
+                {
+                    dc.parameters.AddWithValue("CodAux", cliente.CodAux);
+                    return dc.executeQuery<ClientesModels>();
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return null;
+            }
+        }
+
         public static List<ClientesModels> GetContacto(ClientesModels cliente = null)
         {
             try

@@ -10,3 +10,4 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csprojAssemblyRef
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csproj.CopyComplete
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache

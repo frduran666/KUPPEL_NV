@@ -10,6 +10,10 @@ namespace DSKUPPEL.Controllers
     {
         public ActionResult Clientes()
         {
+            if (Session["VenCod"] == null)
+            {
+                return RedirectToAction("SesionExpirada", "Error");
+            }
             List<ClientesModels> ListClientes = new List<ClientesModels>();
             var listClientes = ClientesDAO.listarClientes();
 
@@ -25,6 +29,7 @@ namespace DSKUPPEL.Controllers
 
         public ActionResult EditCliente(string rutAux, string codAux)
         {
+
             try
             {
                 if (rutAux == null)
@@ -77,6 +82,10 @@ namespace DSKUPPEL.Controllers
 
         public ActionResult Usuarios()
         {
+            if (Session["VenCod"] == null)
+            {
+                return RedirectToAction("SesionExpirada", "Error");
+            }
             List<UsuariosModels> lUsuarios = UsuariosDAO.listarUsuarios();
             ViewBag.usuarios = lUsuarios;
             return View();
@@ -84,6 +93,10 @@ namespace DSKUPPEL.Controllers
 
         public ActionResult AddUsuario()
         {
+            if (Session["VenCod"] == null)
+            {
+                return RedirectToAction("SesionExpirada", "Error");
+            }
             List<UsuariosTiposModels> ltipo = UsuariosTiposDAO.listarTipo();
             ViewBag.tipo = ltipo;
 
@@ -92,8 +105,8 @@ namespace DSKUPPEL.Controllers
 
             return View();
         }
-        [HttpPost, ValidateInput(false)]
 
+        [HttpPost, ValidateInput(false)]
         public ActionResult AddUsuario(FormCollection frm)
         {
             UsuariosModels Usuarios = new UsuariosModels();
@@ -114,14 +127,6 @@ namespace DSKUPPEL.Controllers
                 TempData["Mensaje"] = "ERROR - Codigo de vendedor Repetido. <br>";
                 return RedirectToAction("AddUsuario", "Mantenedores");
             }
-
-            //List<UsuariosTiposModels> ltipo = UsuariosTiposDAO.listarTipo();
-            //ViewBag.tipo = ltipo;
-
-            //List<VendedoresSoftlandModels> lvendedor = VendedoresSoftlandDAO.listarVendedoresSoftland();
-            //ViewBag.vendedor = lvendedor;
-
-            //return RedirectToAction("AddUsuario", "Mantenedores");
         }
 
         public ActionResult Parametros()

@@ -3,7 +3,8 @@
 
     if (Session["tipoId"] == null)
     {
-        Response.Redirect("https://http://200.6.117.116:8010/");
+        //@Url.Action("SesionExpirada", "Error");
+        Response.Redirect("SesionExpirada/Error");
     }
 
     int tipoid = int.Parse(Session["TipoId"].ToString());

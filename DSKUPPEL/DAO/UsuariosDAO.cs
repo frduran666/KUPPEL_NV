@@ -101,6 +101,23 @@ namespace DSKUPPEL.DAO
                 return false;
             }
         }
+
+        public static List<UsuariosModels> ValidaCorreo (UsuariosModels usuario)
+        {
+            try
+            {
+                using (DataContext dc = new DataContext(catalogo, "ValidaCorreo", CommandType.StoredProcedure))
+                {
+                    dc.parameters.AddWithValue("IdUsuario", usuario.id);
+                    return dc.executeQuery<UsuariosModels>();
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return null;
+            }
+        }
         public static List<UsuariosModels> AgregarUsuario(UsuariosModels usuario)
         {
             try

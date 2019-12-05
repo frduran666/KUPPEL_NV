@@ -6,3 +6,4 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csproj.CopyComp
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.pdb
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csprojAssemblyReference.cache
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DAL\obj\Release\DAL.csproj.CoreCompileInputs.cache

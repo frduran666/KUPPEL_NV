@@ -14,6 +14,10 @@ namespace DSKUPPEL.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            if (Session["VenCod"] == null)
+            {
+                return RedirectToAction("SesionExpirada", "Error");
+            }
             ViewBag.VenCod = Session["VenCod"].ToString().Trim();
             return View();
         }

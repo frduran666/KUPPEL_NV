@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "SesionExpirada";
+    Layout = null;
+}
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/animate/animate.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/default/style.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/default/style-responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/default/theme/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="~/Content/assets/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+    <div id="page-container" class="fade">
+        <!-- begin error -->
+        <div class="error">
+            <div class="error-code"><h1>Error</h1></div>
+            <div class="error-content">
+                <div class="error-message">Sesion Expirada</div>
+                <div class="error-desc m-b-30">
+                    <br />
+                </div>
+                <div>
+                    <a href="@Url.Action("Login","Index")" class="btn btn-success p-l-20 p-r-20">Volver a Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="~/Content/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Content/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Content/assets/plugins/js-cookie/js.cookie.js"></script>
+    <script src="~/Content/assets/js/theme/default.min.js"></script>
+    <script src="~/Content/assets/js/apps.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+</body>

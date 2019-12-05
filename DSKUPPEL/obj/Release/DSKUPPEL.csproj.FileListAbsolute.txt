@@ -68,3 +68,4 @@ C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Release\DSKUPPEL.cspro
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Release\DSKUPPEL.csproj.CopyComplete
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Release\DSKUPPEL.dll
 C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Release\DSKUPPEL.pdb
+C:\Users\Desarrollo-PC\source\repos\DSKUPPEL\DSKUPPEL\obj\Release\DSKUPPEL.csproj.CoreCompileInputs.cache
